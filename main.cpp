@@ -14,6 +14,8 @@
  */
 #include <systemc.h>
 
+int* get_instructions();
+
 int sc_main (int argc, char* argv[])
 {
 	// Print a greeting
@@ -35,7 +37,26 @@ int sc_main (int argc, char* argv[])
 		cout << "Invalid Input. Terminating program."<< endl;
 		return (0);
 	}
+	
+	int *instruction_stack=get_instructions();
+	if(instruction_stack == NULL)
+		return (0);
+	
+	int next = 0;
+	cout << sizeof(instruction_stack) << endl;
+	while(next<sizeof(instruction_stack))
+	{
+		//cout << instruction_stack[next] << " " << next <<endl;
+		next++;
+	}
+		
+	return (0);
+}
 
+int * get_instructions()
+{
+	int * instruction_stack;
+	ifstream inFileInstructions;
 	int program_selection = 0;
  	// Prompt the user to select which program to run
 	cout << endl<< "Select the input to this program from the list below."<< endl;
@@ -43,30 +64,42 @@ int sc_main (int argc, char* argv[])
 	cout << "\t2. Y = A*X^2 + B*X + c" << endl;
 	cout << "\t3. Y = A*X^2 + B*X + c (X and Y are vectors of length 5)"<< endl;
 	cin >> program_selection;
-
+	
 	if (1 == program_selection)
 	{
-		//ifstream *inFile("program1.txt");
+		inFileInstructions.open("program1.txt",ifstream::in);
 		cout << endl<< "program 1" << endl;
 	}
 	else if (2 == program_selection)
 	{
-		//ifstream *inFile("program2.txt");
+		inFileInstructions.open("program2.txt",ifstream::in);
 		cout << endl<< "program 2" << endl;
 	}
 	else if (3 == program_selection)
 	{
-		//ifstream *inFile("program3.txt");
+		inFileInstructions.open("program3.txt",ifstream::in);
 		cout << endl<< "program 3" << endl;
 	}
 	else
 	{
 		cout << "Invalid Input. Terminating program."<< endl;
-		return (0);
+		return NULL;
 	}
-
-	return (0);
+	int numLines = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
+	cout << numLines <<endl;
+	instruction_stack = new int [numLines];
+	cout << sizeof(instruction_stack) << endl;
+	int count = 0; 
+	char temp = inFileInstructions.get();
+	while (inFileInstructions.good() && count<numLines) 
+	{
+		instruction_stack[count] = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
+		//cout << instruction_stack[count] << " " << count<<endl;
+		count++;
+		temp = inFileInstructions.get();
+	}
+	
+	return instruction_stack;
 }
-
 
 
