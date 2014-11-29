@@ -6,8 +6,10 @@
  * 				 rebecca
  * 
  * To install SystemC on Linux: http://www.how2posts.com/2014/02/how-to-install-systemc-on-your.html
- * To compile:  export SYSTEMC_HOME=/usr/local/systemc231/
- * 				g++ -I. -I$SYSTEMC_HOME/include -L. -L$SYSTEMC_HOME/lib-linux -o CDC_Sim main.cpp -lsystemc -lm
+ * To compile:  export SYSTEMC_HOME=/usr/local/systemc-2.3.1
+ * 				g++ -I. -I$SYSTEMC_HOME/include -L. -L$SYSTEMC_HOME/lib-linux64 -Wl,-rpath=$SYSTEMC_HOME/lib-linux64 -o CDC_Sim main.cpp -lsystemc -lm
+ * 		or
+ * 				make
  * To run: ./CDC_Sim
  */
 #include <systemc.h>
@@ -43,11 +45,20 @@ int sc_main (int argc, char* argv[])
 	cin >> program_selection;
 
 	if (1 == program_selection)
+	{
+		//ifstream *inFile("program1.txt");
 		cout << endl<< "program 1" << endl;
+	}
 	else if (2 == program_selection)
+	{
+		//ifstream *inFile("program2.txt");
 		cout << endl<< "program 2" << endl;
+	}
 	else if (3 == program_selection)
+	{
+		//ifstream *inFile("program3.txt");
 		cout << endl<< "program 3" << endl;
+	}
 	else
 	{
 		cout << "Invalid Input. Terminating program."<< endl;
