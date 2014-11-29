@@ -11,9 +11,11 @@
 #define ADDREG_WIDTH 18
 #define INDEXREG_WIDTH 18
 #define HOPREG_WIDTH 18
+#define NUM_OP_REGS 8
+#define NUM_FUNC_UNITS 10
 
 #include <systemc.h>
-
+#include "functional_unit_lib.h"
 
 /************************************************
  *
@@ -212,6 +214,7 @@ SC_MODULE (HOPPER_REGS){
  *
  ***********************************************/
 
+/*
 struct STATUS_REG {
 	sc_bit float_adder_stat;
 	sc_bit multiply_one_stat;
@@ -224,6 +227,89 @@ struct STATUS_REG {
 	sc_bit shifter_stat;
 	sc_bit branch_stat;
 };
+*/
 
+SC_MODULE (FUNC_UNIT_STATUS){
+
+	//ports, processes, internal data
+	sc_in< sc_uint<4> > unitSelect;
+	sc_in<bool> inRequest, statusCheck;
+	sc_out<bool> outStatus;
+	bool statusReg[10];
+
+
+	//Process prototypes/declarations
+	void add_request (void);
+	void output_status (void);
+
+	//Helper function prototypes/declarations
+	void make_available (sc_uint<4> );
+
+	SC_CTOR(FUNC_UNIT_STATUS){
+		SC_METHOD(add_request);
+		sensitive << inRequest << unitSelect;
+
+		SC_METHOD(output_status);
+		sensitive << statusCheck << unitSelect;
+
+
+	}//end SC_CTOR
+
+};//end STATUS_REG
+
+/************************************************
+ *
+ * Function:	GLOBAL OPERAND STATUS
+ * Author:		Fred Love
+ * Created:		11/19/15
+ * Modified:	N/A
+ * Comments:    Holds the read/write count of
+ *              each global operand register.
+ *              1.) If operand is not being read from or
+ *                  written to its available for write requests.
+ *              2.) Multiple read requests can occur. Only one write
+ *              3.) This module handles updating the status.  The
+ *                  scoreboard will enforce the policies.
+ *
+ ***********************************************/
+SC_MODULE (GLOB_OP_STATUS){
+
+	//ports, processes, internal data
+	struct status_node{
+		int read_count;
+		int write_count;
+		bool read_available;
+		bool write_available;
+	};
+
+	sc_in< sc_uint<3> > regSelect;
+	sc_out<int> readCountOut, writeCountOut;
+	sc_out<bool> readAvailableOut, writeAvailableOut;
+	status_node statusReg[NUM_OP_REGS];
+
+	//Process declarations/prototypes
+   void check_read (void);   //outputs op reg read count
+   void check_write (void);  //outputs op reg write count
+   void request_read(void);  //increment op reg read request
+   void request_write(void); //increment op reg write request
+   void read_available(void); //used to broadcast if op reg is free for read
+   void write_available(void); //used to broadcast if op reg is free for write
+
+   //Helper function declarations/prototypes
+   void decrement_read(status_node &);
+   void decrement_write(status_node &);
+   //notify function may not be needed.  When time/count gets to zero just decement
+   //bool notifyOpComplete(void);
+
+	//Constructor
+	SC_CTOR (GLOB_OP_STATUS){
+		//SC_METHOD(read_data);
+		//sensitive << regSelect;
+
+		//SC_METHOD(write_data);
+		//sensitive << regSelect;
+	}//end SC_CTOR
+
+}; //end GLOB_OP_REGS
 
 #endif /* REGISTER_LIB_H_ */
