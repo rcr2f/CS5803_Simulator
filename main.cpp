@@ -14,14 +14,39 @@
  */
 #include <systemc.h>
 
-int* get_instructions();
+struct instructions{
+	int * opcode_sequence;
+	int size_of_array;
+};
+
+//returns user selection for which processor to simulate
+int get_processor();
+
+//returns opcode sequence to use in simulation
+instructions get_instructions();
+
 
 int sc_main (int argc, char* argv[])
 {
 	// Print a greeting
 	cout << endl << "Welcome to the CDC6600/CDC7600 simulator " << endl;
 
-	int processor_selection = 0;
+	int processor_selection = get_processor();
+	if (0 == processor_selection)
+		return (0);
+	
+	instructions instruction_stack=get_instructions();
+	if(instruction_stack.opcode_sequence == NULL)
+		return (0);
+	else
+		delete[] instruction_stack.opcode_sequence;
+	
+	return (0);
+}
+
+int get_processor()
+{
+	int processor_selection;
 	// Determine which processor to simulate
 	cout << "Select the processor."<< endl;
 	cout << "\t1. CDC6600" << endl;
@@ -35,27 +60,15 @@ int sc_main (int argc, char* argv[])
 	else
 	{
 		cout << "Invalid Input. Terminating program."<< endl;
-		return (0);
+		return 0;
 	}
-	
-	int *instruction_stack=get_instructions();
-	if(instruction_stack == NULL)
-		return (0);
-	
-	int next = 0;
-	cout << sizeof(instruction_stack) << endl;
-	while(next<sizeof(instruction_stack))
-	{
-		//cout << instruction_stack[next] << " " << next <<endl;
-		next++;
-	}
-		
-	return (0);
+	return processor_selection;
 }
 
-int * get_instructions()
+
+instructions get_instructions()
 {
-	int * instruction_stack;
+	instructions instruction_stack;
 	ifstream inFileInstructions;
 	int program_selection = 0;
  	// Prompt the user to select which program to run
@@ -83,18 +96,17 @@ int * get_instructions()
 	else
 	{
 		cout << "Invalid Input. Terminating program."<< endl;
-		return NULL;
+		return instruction_stack;
 	}
-	int numLines = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
-	cout << numLines <<endl;
-	instruction_stack = new int [numLines];
-	cout << sizeof(instruction_stack) << endl;
+
+	instruction_stack.size_of_array = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
+	instruction_stack.opcode_sequence = new int[instruction_stack.size_of_array];
+	
 	int count = 0; 
 	char temp = inFileInstructions.get();
-	while (inFileInstructions.good() && count<numLines) 
+	while (inFileInstructions.good() && count<instruction_stack.size_of_array) 
 	{
-		instruction_stack[count] = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
-		//cout << instruction_stack[count] << " " << count<<endl;
+		instruction_stack.opcode_sequence[count] = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
 		count++;
 		temp = inFileInstructions.get();
 	}
