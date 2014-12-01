@@ -17,6 +17,8 @@
 struct instructions{
 	int * opcode_sequence;
 	int size_of_array;
+	int * time_to_execute;
+	bool * is_long;
 };
 
 //returns user selection for which processor to simulate
@@ -25,6 +27,9 @@ int get_processor();
 //returns opcode sequence to use in simulation
 instructions get_instructions();
 
+int get_execution_time(int opcode);
+
+bool get_length_of_opcode(int opcode);
 
 int sc_main (int argc, char* argv[])
 {
@@ -101,12 +106,16 @@ instructions get_instructions()
 
 	instruction_stack.size_of_array = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
 	instruction_stack.opcode_sequence = new int[instruction_stack.size_of_array];
+	instruction_stack.time_to_execute = new int[instruction_stack.size_of_array];
+	instruction_stack.is_long = new bool[instruction_stack.size_of_array];
 	
 	int count = 0; 
 	char temp = inFileInstructions.get();
 	while (inFileInstructions.good() && count<instruction_stack.size_of_array) 
 	{
 		instruction_stack.opcode_sequence[count] = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
+		instruction_stack.time_to_execute[count] = get_execution_time(instruction_stack.opcode_sequence[count]);
+		instruction_stack.is_long[count] = get_length_of_opcode(instruction_stack.opcode_sequence[count]);
 		count++;
 		temp = inFileInstructions.get();
 	}
@@ -114,7 +123,7 @@ instructions get_instructions()
 	return instruction_stack;
 }
 
-/*
+
 int get_execution_time(int opcode)
 {
 	switch(opcode) {
@@ -196,5 +205,28 @@ int get_execution_time(int opcode)
 		}
 }
 			
-*/
+bool get_length_of_opcode(int opcode)
+{
+	switch(opcode) {
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 50:
+		case 51:
+		case 52:
+		case 60:
+		case 61:
+		case 62:
+		case 70:
+		case 71:
+		case 72:
+			return true;
+		default:
+			return false;
+		}
+}
 
