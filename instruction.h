@@ -15,12 +15,60 @@
 
 class Instruction{
 	public:
-		int m_opcode_number;
+		enum _register {
+            x0,
+            x1,
+            x2,
+            x3,
+            x4,
+            x5,
+            x6,
+            x7,
+            a0,
+            a1,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            b0,
+            b1,
+            b2,
+            b3,
+            b4,
+            b5,
+            b6,
+            b7,
+            k
+        };
+        
+        enum Operation {
+			multiply,
+			divide,
+			fixed_add,
+			float_add,
+			boolean,
+			shift,
+			branch,
+			increment
+		};
+		
+		enum opcode_length {
+            SHORT,
+            LONG
+		};
+        
+	public:
+		_register m_destination, m_source1, m_source2;
+		Operation m_opcode;
+		opcode_length m_length;
 		int m_time_to_execute;
-		bool m_is_long;
-	
+
 	public:
 		Instruction();
+		
+		Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src1};
 		
 		void set_opcode(int opcode);
 		

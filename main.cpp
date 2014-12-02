@@ -12,8 +12,8 @@
  * 				make
  * To run: ./CDC_Sim
  */
-#include <systemc.h>
-#include "instruction.h"
+
+#include "main.h"
 
 
 //returns user selection for which processor to simulate

@@ -16,6 +16,14 @@ Instruction::Instruction()
 {
 }
 
+Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src1}
+{
+	m_destination = dest;
+	m_source1 = src1;
+	m_source2 = src2;
+	m_opcode = opcode;
+	m_length = length;
+}
 
 void Instruction::set_opcode(int opcode)
 {
