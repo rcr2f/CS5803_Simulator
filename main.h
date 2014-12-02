@@ -25,7 +25,8 @@ Instruction program2[] = {
     Instruction(multiply, SHORT, x3, x3, x1),
     Instruction(float_add, SHORT, x5,  x6, x3),
     Instruction(float_add, SHORT, x7, x5, x4),
-    Instruction(increment, LONG, a7, a7, k) };
+    Instruction(increment, LONG, a7, a7, k) 
+    };
     
 Instruction program3[] = {/*TODO*/};
 

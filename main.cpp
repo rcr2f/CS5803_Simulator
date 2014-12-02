@@ -19,8 +19,8 @@
 //returns user selection for which processor to simulate
 int get_processor();
 
-//returns opcode sequence to use in simulation
-//Instruction * get_instructions(int * length_of_sequence);
+//prompts user for which program to run and returns the int corresponding to it
+int get_program_choice();
 
 int sc_main (int argc, char* argv[])
 {
@@ -31,16 +31,11 @@ int sc_main (int argc, char* argv[])
 	if (0 == processor_selection)
 		return (0);
 		
-	int length_of_sequence = 0;
-/*	
-	Instruction * instruction_stack=get_instructions(&length_of_sequence);
-	if(instruction_stack == NULL)
+	int program_selection = get_program_choice();
+	if (0 == program_selection)
 		return (0);
-		
-	for(int i =0; i<length_of_sequence; i++)
-		cout << instruction_stack[i].m_opcode_number << endl;
-	
-	delete[] instruction_stack;*/
+
+
 
 	return (0);
 }
@@ -67,10 +62,8 @@ int get_processor()
 }
 
 
-/*Instruction * get_instructions(int * length_of_sequence)
+int get_program_choice()
 {
-	Instruction * instruction_stack;
-	ifstream inFileInstructions;
 	int program_selection = 0;
  	// Prompt the user to select which program to run
 	cout << endl<< "Select the input to this program from the list below."<< endl;
@@ -81,17 +74,14 @@ int get_processor()
 	
 	if (1 == program_selection)
 	{
-		inFileInstructions.open("program1.txt",ifstream::in);
 		cout << endl<< "program 1" << endl;
 	}
 	else if (2 == program_selection)
 	{
-		inFileInstructions.open("program2.txt",ifstream::in);
 		cout << endl<< "program 2" << endl;
 	}
 	else if (3 == program_selection)
 	{
-		inFileInstructions.open("program3.txt",ifstream::in);
 		cout << endl<< "program 3" << endl;
 	}
 	else
@@ -99,18 +89,6 @@ int get_processor()
 		cout << "Invalid Input. Terminating program."<< endl;
 		return instruction_stack;
 	}
-
-	*length_of_sequence = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
-	instruction_stack = new Instruction[*length_of_sequence];
-
-	int count = 0; 
-	char temp = inFileInstructions.get();
-	while (inFileInstructions.good() && count < *length_of_sequence) 
-	{
-		instruction_stack[count].set_opcode(((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48));
-		count++;
-		temp = inFileInstructions.get();
-	}
 	
-	return instruction_stack;
-}*/
+	return program_selection;
+}
