@@ -15,13 +15,12 @@
 #include <systemc.h>
 #include "instruction.h"
 
-int length_of_sequence = 0;
 
 //returns user selection for which processor to simulate
 int get_processor();
 
 //returns opcode sequence to use in simulation
-Instruction * get_instructions();
+Instruction * get_instructions(int * length_of_sequence);
 
 int sc_main (int argc, char* argv[])
 {
@@ -31,15 +30,17 @@ int sc_main (int argc, char* argv[])
 	int processor_selection = get_processor();
 	if (0 == processor_selection)
 		return (0);
+		
+	int length_of_sequence = 0;
 	
-	Instruction * instruction_stack=get_instructions();
+	Instruction * instruction_stack=get_instructions(&length_of_sequence);
 	if(instruction_stack == NULL)
 		return (0);
 		
 	for(int i =0; i<length_of_sequence; i++)
 		cout << instruction_stack[i].m_opcode_number << endl;
 	
-	//delete[] instruction_stack;
+	delete[] instruction_stack;
 
 	return (0);
 }
@@ -66,7 +67,7 @@ int get_processor()
 }
 
 
-Instruction * get_instructions()
+Instruction * get_instructions(int * length_of_sequence)
 {
 	Instruction * instruction_stack;
 	ifstream inFileInstructions;
@@ -99,12 +100,12 @@ Instruction * get_instructions()
 		return instruction_stack;
 	}
 
-	length_of_sequence = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
-	instruction_stack = new Instruction[length_of_sequence];
+	*length_of_sequence = ((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48);
+	instruction_stack = new Instruction[*length_of_sequence];
 
 	int count = 0; 
 	char temp = inFileInstructions.get();
-	while (inFileInstructions.good() && count < length_of_sequence) 
+	while (inFileInstructions.good() && count < *length_of_sequence) 
 	{
 		instruction_stack[count].set_opcode(((int)inFileInstructions.get()-48)*10 + ((int)inFileInstructions.get()-48));
 		count++;

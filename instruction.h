@@ -1,3 +1,14 @@
+/*
+ * file: instruction.h
+ * project: CDC6600/CDC7600
+ * 
+ *  Created on: Dec 1, 2014
+ *      Author:  rebecca
+ * 
+ * description: instruction class used to descibe the instructions 
+ * 		needed to run the CDC6600/CDC7600 simulator				 
+ */
+
 #ifndef INSTRUCTION_H_
 #define INSTRUCTION_H_
 

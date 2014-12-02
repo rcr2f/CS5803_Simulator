@@ -1,4 +1,14 @@
-
+/*
+ * file: instruction.cpp
+ * project: CDC6600/CDC7600
+ * 
+ *  Created on: Dec 1, 2014
+ *      Author:  rebecca
+ * 
+ * description: function definitions for Instruction class
+ * 				 
+ */
+ 
 #include "instruction.h"
 
 
