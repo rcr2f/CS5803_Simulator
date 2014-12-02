@@ -20,7 +20,7 @@
 int get_processor();
 
 //returns opcode sequence to use in simulation
-Instruction * get_instructions(int * length_of_sequence);
+//Instruction * get_instructions(int * length_of_sequence);
 
 int sc_main (int argc, char* argv[])
 {
@@ -32,7 +32,7 @@ int sc_main (int argc, char* argv[])
 		return (0);
 		
 	int length_of_sequence = 0;
-	
+/*	
 	Instruction * instruction_stack=get_instructions(&length_of_sequence);
 	if(instruction_stack == NULL)
 		return (0);
@@ -40,7 +40,7 @@ int sc_main (int argc, char* argv[])
 	for(int i =0; i<length_of_sequence; i++)
 		cout << instruction_stack[i].m_opcode_number << endl;
 	
-	delete[] instruction_stack;
+	delete[] instruction_stack;*/
 
 	return (0);
 }
@@ -67,7 +67,7 @@ int get_processor()
 }
 
 
-Instruction * get_instructions(int * length_of_sequence)
+/*Instruction * get_instructions(int * length_of_sequence)
 {
 	Instruction * instruction_stack;
 	ifstream inFileInstructions;
@@ -113,4 +113,4 @@ Instruction * get_instructions(int * length_of_sequence)
 	}
 	
 	return instruction_stack;
-}
+}*/

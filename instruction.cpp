@@ -16,7 +16,7 @@ Instruction::Instruction()
 {
 }
 
-Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src1}
+Instruction::Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src2)
 {
 	m_destination = dest;
 	m_source1 = src1;
@@ -24,7 +24,7 @@ Instruction(Operation opcode, opcode_length length, _register dest,  _register s
 	m_opcode = opcode;
 	m_length = length;
 }
-
+/*
 void Instruction::set_opcode(int opcode)
 {
 	m_opcode_number = opcode;
@@ -137,3 +137,4 @@ bool Instruction::set_length_of_opcode()
 			return false;
 		}
 }
+*/
