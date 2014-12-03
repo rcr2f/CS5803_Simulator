@@ -42,17 +42,24 @@ int sc_main (int argc, char* argv[])
 	instruction_buf.clock(clock);
 	instruction_buf.end(end);
 	instruction_buf.m_program_selection = program_selection;
+	instruction_buf.m_processor_selection = processor_selection;
 	
 	sc_start(1, SC_NS);
 	
+	int clock_cycles = 0;
 	while(end == false)
 	{
 		clock = 0;
 		sc_start(1, SC_NS);
 		clock = 1;
 		sc_start(1, SC_NS);
+		clock_cycles++;
 	}
 
+	
+	cout << endl << "Simulation complete!" << endl;
+	cout << "\tClock Cycles: " << clock_cycles << endl;
+	cout << "\tExecution Time: " << sc_time_stamp() << endl << endl;
 	return (0);
 }
 

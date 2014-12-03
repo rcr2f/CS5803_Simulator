@@ -22,6 +22,8 @@ SC_MODULE (SCOREBOARD){
 
 	//rebecca
 	sc_in_clk clock;
+	sc_inout< bool > end;
+	sc_fifo<Instruction> fifo_buffer;
 	//sc_in<Instruction> issued_instruction;
 	//sc_out<bool> ready_for_instruction;
 	
@@ -101,9 +103,28 @@ SC_MODULE (SCOREBOARD){
 	void decode_short (shortInstruct);
 	void decode_long (longInstruct);
 */
+	int count;
+	void test(void)
+	{
+		Instruction next_instruction;
+		
+		if(fifo_buffer.nb_read(next_instruction)) {
+			cout << sc_time_stamp() << " packet: " << next_instruction << endl;
+		}
+		else 
+			count++;
+		if (count == 5) {
+			end = true;
+		}
 
+	}
 	//Constructor
 	SC_CTOR(SCOREBOARD){
+		SC_METHOD (test);
+		sensitive << clock.pos();
+		
+		sc_fifo<Instruction> fifo_buffer (32);
+		
 /*rebecca
 		SC_METHOD (issue_stage);
 		//sensitivity here
@@ -126,7 +147,7 @@ SC_MODULE (SCOREBOARD){
 		unit_stat_reg -> unitSelect( unitSelectSig );
 
 */
-
+		count = 0;
 	}//end SC_CTOR
 
 };//end SCOREBOARD

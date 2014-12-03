@@ -12,13 +12,15 @@
     
 SC_MODULE(instruction_buffer) {
 	sc_in_clk clock;
-	sc_out< bool > end; 
+	sc_inout< bool > end; 
+
 	void m_issue_instruction(void);
 	void m_instruction_source(void);
 	
 	SCOREBOARD * m_scoreboard;
 	
 	int m_program_selection;
+	int m_processor_selection;
 	int instruction_addr;
 	//Constructor
 	SC_CTOR(instruction_buffer) {
@@ -26,11 +28,13 @@ SC_MODULE(instruction_buffer) {
 		sensitive << clock.pos();
 		SC_METHOD(m_instruction_source);
 
-		sc_fifo<Instruction> fifo_buffer (8);
+		sc_fifo<Instruction> fifo_buffer (16);
 		instruction_addr =0;
 		
 		m_scoreboard = new SCOREBOARD("scoreboard0");
 		m_scoreboard->clock(clock);
+		m_scoreboard->end(end);
+		//m_scoreboard->fifo
 		
 	}
 	
@@ -42,11 +46,12 @@ void instruction_buffer::m_issue_instruction(void) {
 	if( fifo_buffer.nb_read(next_instruction)) {
 		//TODO: Send to Scoreboard
 		cout << sc_time_stamp() << " packet: " << next_instruction << endl;
+		m_scoreboard->fifo_buffer.write(next_instruction);
 	}
 	else if(instruction_addr == size[m_program_selection]) {
 		//TODO: End at final instruction execution, not here
 		cout << sc_time_stamp() << " simulation complete" <<endl;
-		end.write(true);
+		//end.write(true);
 	}
 	else {
 		cout << sc_time_stamp() << " instruction pipeline empty" <<endl;		
