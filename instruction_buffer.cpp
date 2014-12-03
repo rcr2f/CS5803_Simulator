@@ -1,5 +1,5 @@
 /*
- * instruction_fifo_pipeline.cpp
+ * instruction_buffer.cpp
  *
  *      Author: rebecca
  */
@@ -10,7 +10,7 @@
 #include "scoreboard.cpp"
 
     
-SC_MODULE(instruction_fifo_pipeline) {
+SC_MODULE(instruction_buffer) {
 	sc_in_clk clock;
 	sc_out< bool > end; 
 	void m_issue_instruction(void);
@@ -21,7 +21,7 @@ SC_MODULE(instruction_fifo_pipeline) {
 	int m_program_selection;
 	int instruction_addr;
 	//Constructor
-	SC_CTOR(instruction_fifo_pipeline) {
+	SC_CTOR(instruction_buffer) {
 		SC_METHOD(m_issue_instruction);
 		sensitive << clock.pos();
 		SC_METHOD(m_instruction_source);
@@ -37,7 +37,7 @@ SC_MODULE(instruction_fifo_pipeline) {
 	sc_fifo<Instruction> fifo_buffer;
 };
 
-void instruction_fifo_pipeline::m_issue_instruction(void) {
+void instruction_buffer::m_issue_instruction(void) {
 	Instruction next_instruction;
 	if( fifo_buffer.nb_read(next_instruction)) {
 		//TODO: Send to Scoreboard
@@ -54,7 +54,7 @@ void instruction_fifo_pipeline::m_issue_instruction(void) {
 
 }
 
-void instruction_fifo_pipeline::m_instruction_source(void) {
+void instruction_buffer::m_instruction_source(void) {
 	if(instruction_addr >= size[m_program_selection])
 		//fifo_buffer.write(Instruction());
 		return;

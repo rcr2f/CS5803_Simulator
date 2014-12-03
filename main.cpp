@@ -38,7 +38,7 @@ int sc_main (int argc, char* argv[])
 	sc_signal< bool > clock;
 	sc_signal< bool > end;
 	
-	instruction_fifo_pipeline instruction_buf("instruction_buf");
+	instruction_buffer instruction_buf("instruction_buf");
 	instruction_buf.clock(clock);
 	instruction_buf.end(end);
 	instruction_buf.m_program_selection = program_selection;
