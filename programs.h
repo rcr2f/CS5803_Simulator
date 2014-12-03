@@ -1,11 +1,9 @@
-
-#ifndef MAIN_H_
-#define MAIN_H_
-
-#include <systemc.h>
-#include "instruction.h"
-#include "instruction_fifo_pipeline.cpp"
 /*
+ * programs.h
+ *
+ *      Author: rebecca
+ */
+
 Instruction program1[] = {
     Instruction(increment, LONG, a1, a1, k),
     Instruction(increment, LONG, a2, a2, k),
@@ -15,7 +13,7 @@ Instruction program1[] = {
     Instruction(float_add, SHORT, x7, x6, x3),
     Instruction(increment, LONG, a7, a7, k) 
     };
-
+    
 Instruction program2[] = {
     Instruction(increment, LONG, a1, a1, k),
     Instruction(increment, LONG, a2, a2, k),
@@ -28,8 +26,7 @@ Instruction program2[] = {
     Instruction(float_add, SHORT, x7, x5, x4),
     Instruction(increment, LONG, a7, a7, k) 
     };
-    */
-//Instruction program3[] = {/*TODO*/};
+    
+Instruction program3[] = {/*TODO*/};
 
-
-#endif /* MAIN_H_ */
+int size[] = {0, 7, 10, 63};

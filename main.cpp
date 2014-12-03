@@ -35,8 +35,23 @@ int sc_main (int argc, char* argv[])
 	if (0 == program_selection)
 		return (0);
 
-	instruction_fifo_pipeline instruction_buf("what is this?");
-	sc_start(30, SC_NS);
+	sc_signal< bool > clock;
+	sc_signal< bool > end;
+	
+	instruction_fifo_pipeline instruction_buf("instruction_buf");
+	instruction_buf.clock(clock);
+	instruction_buf.end(end);
+	instruction_buf.m_program_selection = program_selection;
+	
+	sc_start(1, SC_NS);
+	
+	while(end == false)
+	{
+		clock = 0;
+		sc_start(1, SC_NS);
+		clock = 1;
+		sc_start(1, SC_NS);
+	}
 
 	return (0);
 }
