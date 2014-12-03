@@ -9,16 +9,24 @@
 #define SCOREBOARD_H_
 
 #include <systemc.h>
-#include "register_lib.h"
+//#include "register_lib.h" rebecca
+//rebecca
+#include "instruction.h"
+#include "enums.h"
 
 SC_MODULE (SCOREBOARD){
 
 	//ports, processes, internal data
-	sc_signal<bool> unitStatSig;
-	sc_signal< sc_uint<4> > unitSelectSig;
+	//sc_signal<bool> unitStatSig; rebecca
+	//sc_signal< sc_uint<4> > unitSelectSig; rebecca
 
-	FUNC_UNIT_STATUS *unit_stat_reg;
-
+	//rebecca
+	sc_in_clk clock;
+	//sc_in<Instruction> issued_instruction;
+	//sc_out<bool> ready_for_instruction;
+	
+	//FUNC_UNIT_STATUS *unit_stat_reg; rebecca
+/*
 	enum Operation {
 		multiply,
 		divide,
@@ -42,11 +50,12 @@ SC_MODULE (SCOREBOARD){
 		shifter,
 		brancher
 	};
+	*/
 
 
 
 	//Process declarations/prototypes
-
+/*rebecca
 
 	//FOUR STAGES OF SCOREBOARD CONTROL
 	void issue_stage(void);
@@ -80,22 +89,22 @@ SC_MODULE (SCOREBOARD){
 		Unit r6;
 		Unit r7;
 	};
-
+*/
 /*
 	void update_operand_status(void);
 	void update_unit_status(void);
 	void read_operand_status(void);
 	void read_unit_status(void);
 */
-
+/*rebecca
 	//Helper function declarations/prototypes
 	void decode_short (shortInstruct);
 	void decode_long (longInstruct);
-
+*/
 
 	//Constructor
 	SC_CTOR(SCOREBOARD){
-
+/*rebecca
 		SC_METHOD (issue_stage);
 		//sensitivity here
 
@@ -116,11 +125,11 @@ SC_MODULE (SCOREBOARD){
 		unit_stat_reg -> outStatus( unitStatSig );
 		unit_stat_reg -> unitSelect( unitSelectSig );
 
-
+*/
 
 	}//end SC_CTOR
 
-}//end SCOREBOARD
+};//end SCOREBOARD
 
 
 

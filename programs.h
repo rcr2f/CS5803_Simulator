@@ -27,6 +27,8 @@ Instruction program2[] = {
     Instruction(increment, LONG, a7, a7, k) 
     };
     
-Instruction program3[] = {/*TODO*/};
+Instruction program3[] = {
+	/*TODO once everything else is done...changing 63 lines of code is too much work*/
+	};
 
 int size[] = {0, 7, 10, 63};

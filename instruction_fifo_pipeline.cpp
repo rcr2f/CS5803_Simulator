@@ -7,6 +7,7 @@
 #include <systemc.h>
 #include <instruction.h>
 #include "programs.h"
+#include "scoreboard.cpp"
 
     
 SC_MODULE(instruction_fifo_pipeline) {
@@ -14,6 +15,8 @@ SC_MODULE(instruction_fifo_pipeline) {
 	sc_out< bool > end; 
 	void m_issue_instruction(void);
 	void m_instruction_source(void);
+	
+	SCOREBOARD * m_scoreboard;
 	
 	int m_program_selection;
 	int instruction_addr;
@@ -25,6 +28,9 @@ SC_MODULE(instruction_fifo_pipeline) {
 
 		sc_fifo<Instruction> fifo_buffer (8);
 		instruction_addr =0;
+		
+		m_scoreboard = new SCOREBOARD("scoreboard0");
+		m_scoreboard->clock(clock);
 		
 	}
 	
@@ -50,13 +56,14 @@ void instruction_fifo_pipeline::m_issue_instruction(void) {
 
 void instruction_fifo_pipeline::m_instruction_source(void) {
 	if(instruction_addr >= size[m_program_selection])
+		//fifo_buffer.write(Instruction());
 		return;
-	else if(m_program_selection == 1) {
+	else if(1 == m_program_selection) {
 		fifo_buffer.write(program1[instruction_addr]);
 
 		instruction_addr++;
 	}
-	else if(m_program_selection == 2) {
+	else if(2 == m_program_selection) {
 		fifo_buffer.write(program2[instruction_addr]);
 
 		instruction_addr++;

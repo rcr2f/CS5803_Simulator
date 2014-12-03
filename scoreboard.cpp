@@ -8,7 +8,7 @@
 #include "scoreboard.h"
 #include "register_lib.h"
 #include <systemc.h>
-
+/*rebecca
 void SCOREBOARD::decode_short(shortInstruct instruct){
 	/*
 	 * struct shortInstruct {
@@ -20,7 +20,7 @@ void SCOREBOARD::decode_short(shortInstruct instruct){
 	sc_uint<3> j;
 	sc_uint<3> k;
 };
-	 */
+	 rebecca
 
 	//FORM OPCODE
 	sc_uint<7> opcode = 0;
@@ -43,4 +43,4 @@ void SCOREBOARD::issue_stage(void){
 }//end issue_stage
 
 
-
+*/
