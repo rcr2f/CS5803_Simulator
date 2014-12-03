@@ -12,6 +12,9 @@
 #ifndef INSTRUCTION_H_
 #define INSTRUCTION_H_
 
+#include <iostream>
+using namespace std;
+
 enum _register {
 	x0,
     x1,
@@ -67,6 +70,8 @@ class Instruction{
 		Instruction();
 		
 		Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src2);
+		
+		friend ostream& operator<<(ostream& os, const Instruction& instr);
 		/*
 		void set_opcode(int opcode);
 		

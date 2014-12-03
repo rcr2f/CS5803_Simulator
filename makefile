@@ -9,7 +9,7 @@ TARGET_ARCH := linux64
 
 CC_FILES := $(shell find . -name "*.cpp" -type f)
 OBJECTS := $(subst .cc,.o,$(CC_FILES))
-OBJECT := ./instruction.cpp ./main.cpp 
+OBJECT := ./instruction.cpp ./main.cpp
 
 SYSTEMC_HOME := /usr/local/systemc-2.3.1
 

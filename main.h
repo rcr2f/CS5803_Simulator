@@ -4,6 +4,7 @@
 
 #include <systemc.h>
 #include "instruction.h"
+#include "instruction_fifo_pipeline.cpp"
 
 Instruction program1[] = {
     Instruction(increment, LONG, a1, a1, k),

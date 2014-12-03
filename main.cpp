@@ -16,8 +16,8 @@
 #include "main.h"
 
 
-//returns user selection for which processor to simulate
-int get_processor();
+//prompts user for which processor to run and returns the int corresponding to it
+int get_processor_choice();
 
 //prompts user for which program to run and returns the int corresponding to it
 int get_program_choice();
@@ -27,7 +27,7 @@ int sc_main (int argc, char* argv[])
 	// Print a greeting
 	cout << endl << "Welcome to the CDC6600/CDC7600 simulator " << endl;
 
-	int processor_selection = get_processor();
+	int processor_selection = get_processor_choice();
 	if (0 == processor_selection)
 		return (0);
 		
@@ -35,12 +35,13 @@ int sc_main (int argc, char* argv[])
 	if (0 == program_selection)
 		return (0);
 
-
+	instruction_fifo_pipeline instruction_buf("what is this?");
+	sc_start(30, SC_NS);
 
 	return (0);
 }
 
-int get_processor()
+int get_processor_choice()
 {
 	int processor_selection;
 	// Determine which processor to simulate
@@ -49,11 +50,7 @@ int get_processor()
 	cout << "\t2. CDC7600" << endl;
 	cin >> processor_selection;
 
-	if (1 == processor_selection)
-		cout << endl<< "CDC6600" << endl;
-	else if (2 == processor_selection)
-		cout << endl<< "CDC7600" << endl;
-	else
+	if (1 != processor_selection && 2 != processor_selection)
 	{
 		cout << "Invalid Input. Terminating program."<< endl;
 		return 0;
@@ -72,22 +69,10 @@ int get_program_choice()
 	cout << "\t3. Y = A*X^2 + B*X + c (X and Y are vectors of length 5)"<< endl;
 	cin >> program_selection;
 	
-	if (1 == program_selection)
-	{
-		cout << endl<< "program 1" << endl;
-	}
-	else if (2 == program_selection)
-	{
-		cout << endl<< "program 2" << endl;
-	}
-	else if (3 == program_selection)
-	{
-		cout << endl<< "program 3" << endl;
-	}
-	else
+	if (3 != program_selection && 2 != program_selection && 1 != program_selection)
 	{
 		cout << "Invalid Input. Terminating program."<< endl;
-		return instruction_stack;
+		return 0;
 	}
 	
 	return program_selection;
