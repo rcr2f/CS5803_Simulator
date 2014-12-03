@@ -7,6 +7,9 @@
 
 #ifndef FUNCTIONAL_UNIT_LIB_H_
 #define FUNCTIONAL_UNIT_LIB_H_
+#define ADDREG_WIDTH 18
+#define INDEXREG_WIDTH 18
+
 #include "systemc.h"
 
 
@@ -21,20 +24,15 @@
 SC_MODULE (MULTIPLIER) {
 
    //ports, processes, internal data
-   sc_in<int> inA;
-   sc_in<int> inB;
-   sc_out<int> product;
-
-   //Events
-   sc_event multiply_busy, multiply_available;
-   sc_event multiply_complete;
+   sc_in<bool> op_ready;
+   sc_out<int> cycle_delay;
 
    //Process prototypes/declarations
    void multiply (void);
 
    SC_CTOR (MULTIPLIER){
       SC_METHOD (multiply);
-      sensitive << inA << inB;
+      sensitive << op_ready;
 
    } //end SC_CTOR
 
@@ -54,21 +52,17 @@ SC_MODULE (MULTIPLIER) {
  *******************************/
 SC_MODULE (DIVIDER) {
 
-   //ports, processes, internal data
-   sc_in<int> inA;
-   sc_in<int> inB;
-   sc_out<int> quotient;
+	//ports, processes, internal data
+	   sc_in<bool> op_ready;
+	   sc_out<int> cycle_delay;
 
-   //Events
-   sc_event divide_busy, divide_available;
-   sc_event divide_complete;
+	   //Process prototypes/declarations
+	   void divide (void);
 
-   //Process prototypes/declarations
-   void divide (void);
+	   SC_CTOR (DIVIDER){
+	      SC_METHOD (divide);
+	      sensitive << op_ready;
 
-   SC_CTOR (DIVIDER){
-      SC_METHOD (divide);
-      sensitive << inA << inB;
 
    } //end SC_CTOR
 
@@ -85,21 +79,16 @@ SC_MODULE (DIVIDER) {
  *******************************/
 SC_MODULE (FIXED_ADD) {
 
-   //ports, processes, internal data
-   sc_in<int> inA;
-   sc_in<int> inB;
-   sc_out<int> sum;
+	//ports, processes, internal data
+	   sc_in<bool> op_ready;
+	   sc_out<int> cycle_delay;
 
-   //Process prototypes/declarations
-   void add (void);
+	   //Process prototypes/declarations
+	   void add (void);
 
-   //Events
-   sc_event fixed_add_busy, fixed_add_available;
-   sc_event fixed_add_complete;
-
-   SC_CTOR (FIXED_ADD){
-      SC_METHOD (add);
-      sensitive << inA << inB;
+	   SC_CTOR (FIXED_ADD){
+	      SC_METHOD (add);
+	      sensitive << op_ready;
 
    } //end SC_CTOR
 
@@ -116,21 +105,17 @@ SC_MODULE (FIXED_ADD) {
  *******************************/
 SC_MODULE (FLOATING_ADD) {
 
-   //ports, processes, internal data
-   sc_in<int> inA;
-   sc_in<int> inB;
-   sc_out<int> sum;
+	//ports, processes, internal data
+	   sc_in<bool> op_ready;
+	   sc_out<int> cycle_delay;
 
-   //Events
-   sc_event float_add_busy, float_add_available;
-   sc_event float_add_complete;
+	   //Process prototypes/declarations
+	   void add (void);
 
-   //Process prototypes/declarations
-   void add (void);
+	   SC_CTOR (FLOATING_ADD){
+	      SC_METHOD (add);
+	      sensitive << op_ready;
 
-   SC_CTOR (FLOATING_ADD){
-      SC_METHOD (add);
-      sensitive << inA << inB;
 
    } //end SC_CTOR
 
@@ -147,20 +132,16 @@ SC_MODULE (FLOATING_ADD) {
  *******************************/
 SC_MODULE (INCREMENTER) {
 
-   //ports, processes, internal data
-   sc_in<int> in;
-   sc_out<int> result;
+	//ports, processes, internal data
+	   sc_in<bool> op_ready;
+	   sc_out<int> cycle_delay;
 
-   //Events
-   sc_event increment_busy, increment_available;
-   sc_event increment_complete;
+	   //Process prototypes/declarations
+	   void increment (void);
 
-   //Process prototypes/declarations
-   void increment (void);
-
-   SC_CTOR (INCREMENTER){
-      SC_METHOD (increment);
-      sensitive << in;
+	   SC_CTOR (INCREMENTER){
+	      SC_METHOD (increment);
+	      sensitive << op_ready;
 
    } //end SC_CTOR
 
@@ -177,21 +158,16 @@ SC_MODULE (INCREMENTER) {
  *******************************/
 SC_MODULE (SHIFTER) {
 
-   //ports, processes, internal data
-   sc_in<int> in;
-   sc_in<int> num;
-   sc_out<int> result;
+	//ports, processes, internal data
+	   sc_in<bool> op_ready;
+	   sc_out<int> cycle_delay;
 
-   //Events
-   sc_event shift_busy, shift_available;
-   sc_event shift_complete;
+	   //Process prototypes/declarations
+	   void shift (void);
 
-   //Process prototypes/declarations
-   void shift (void);
-
-   SC_CTOR (SHIFTER){
-      SC_METHOD (shift);
-      sensitive << in;
+	   SC_CTOR (SHIFTER){
+	      SC_METHOD (shift);
+	      sensitive << op_ready;
 
    } //end SC_CTOR
 
@@ -208,22 +184,43 @@ SC_MODULE (SHIFTER) {
  *******************************/
 SC_MODULE (BOOLEAN) {
 
-   //ports, processes, internal data
-   sc_in<int> inA;
-   sc_in<int> inB;
-   sc_in<int> select;
-   sc_out<int> result;
+	//ports, processes, internal data
+	   sc_in<bool> op_ready;
+	   sc_out<int> cycle_delay;
 
-   //Events
-   sc_event bool_busy, bool_available;
-   sc_event bool_complete;
+	   //Process prototypes/declarations
+	   void logic_operation (void);
 
-   void logic_operation (void);
+	   SC_CTOR (BOOLEAN){
+	      SC_METHOD (logic_operation);
+	      sensitive << op_ready;
 
 
-   SC_CTOR (BOOLEAN){
-      SC_METHOD (logic_operation);
-      sensitive << inA << inB << select;
+   } //end SC_CTOR
+
+}; //end boolean
+
+/******************************
+ *
+ * Function:	BRANCHER MODULE
+ * Author:		Fred Love
+ * Created:		11/16/15
+ * Modified:	N/A
+ *
+ *******************************/
+SC_MODULE (BRANCHER) {
+
+	//ports, processes, internal data
+	   sc_in<bool> op_ready;
+	   sc_out<int> cycle_delay;
+
+	   //Process prototypes/declarations
+	   void branch (void);
+
+	   SC_CTOR (BRANCHER){
+	      SC_METHOD (branch);
+	      sensitive << op_ready;
+
 
    } //end SC_CTOR
 

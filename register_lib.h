@@ -154,8 +154,8 @@ SC_MODULE (FUNC_OP_REGS){
 
 	//ports, processes, internal data
 	sc_in< sc_uint<4> > regSelect;
-	sc_in< sc_uint<OPREG_WIDTH> > dataIn;
-	sc_out< sc_uint<OPREG_WIDTH> > dataOut;
+	//sc_in< sc_uint<OPREG_WIDTH> > dataIn;
+	//sc_out< sc_uint<OPREG_WIDTH> > dataOut;
 	sc_uint<OPREG_WIDTH> opReg[10];
 
 	//Process prototypes/declarations

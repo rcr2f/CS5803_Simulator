@@ -7,7 +7,7 @@
 
 #include <systemc.h>
 #include "functional_unit_lib.h"
-#include "register_lib.h"
+//#include "register_lib.h"
 
 /******************************
  *
@@ -19,12 +19,9 @@
  *******************************/
 void MULTIPLIER::multiply(void){
 
-	//update status register to busy
-	//increment simulation time by 10 cycles
-	//update status register to available
-	multiply_busy.notify();
-	multiply_complete.notify();
-	multiply_available.notify();
+	if (op_ready){
+		cycle_delay.write(10);
+	}
 
 }//end multiply
 
@@ -39,9 +36,9 @@ void MULTIPLIER::multiply(void){
  *******************************/
 void DIVIDER::divide(void){
 
-	divide_busy.notify();
-	divide_complete.notify();
-	divide_available.notify();
+	if (op_ready){
+			cycle_delay.write(29);
+		}
 
 }//end divide
 
@@ -56,9 +53,9 @@ void DIVIDER::divide(void){
  *******************************/
 void FIXED_ADD::add(void){
 
-	fixed_add_busy.notify();
-	fixed_add_complete.notify();
-	fixed_add_available.notify();
+	if (op_ready){
+		cycle_delay.write(3);
+	}
 
 }//end add
 
@@ -73,9 +70,9 @@ void FIXED_ADD::add(void){
  *******************************/
 void FLOATING_ADD::add(void){
 
-	float_add_busy.notify();
-	float_add_complete.notify();
-	float_add_available.notify();
+	if (op_ready){
+		cycle_delay.write(4);
+	}
 
 }//end add
 
@@ -90,9 +87,9 @@ void FLOATING_ADD::add(void){
  *******************************/
 void INCREMENTER::increment(void){
 
-	increment_busy.notify();
-	increment_complete.notify();
-	increment_available.notify();
+	if (op_ready){
+		cycle_delay.write(3);
+	}
 
 }//end increment
 
@@ -107,9 +104,9 @@ void INCREMENTER::increment(void){
  *******************************/
 void SHIFTER::shift(void){
 
-	shift_busy.notify();
-	shift_complete.notify();
-	shift_available.notify();
+	if (op_ready){
+		cycle_delay.write(4);
+	}
 
 }//end shift
 
@@ -124,11 +121,27 @@ void SHIFTER::shift(void){
  *******************************/
 void BOOLEAN::logic_operation(void){
 
-	bool_busy.notify();
-	bool_complete.notify();
-	bool_available.notify();
+	if (op_ready){
+		cycle_delay.write(3);
+	}
 
 }//end logic_operation
+
+/******************************
+ *
+ * Function:	BRANCHER MODULE
+ * Author:		Fred Love
+ * Created:		11/16/15
+ * Modified:	N/A
+ *
+ *******************************/
+void BRANCHER::branch(void){
+
+	if (op_ready){
+		cycle_delay.write(14);
+	}
+
+}//end branch
 
 
 
