@@ -27,8 +27,18 @@ SC_MODULE (MULTIPLIER) {
    sc_in<bool> op_ready;
    sc_out<int> cycle_delay;
 
+    sc_in<bool> is_CDC600;
+    sc_in<bool> reset_count; //new instruction issued
+   	sc_out<bool> result;
+	sc_out<bool> busy;
+
+	
+
    //Process prototypes/declarations
    void multiply (void);
+   {
+
+   }
 
    SC_CTOR (MULTIPLIER){
       SC_METHOD (multiply);

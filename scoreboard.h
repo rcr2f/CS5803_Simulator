@@ -24,6 +24,9 @@ SC_MODULE (SCOREBOARD){
 	sc_in_clk clock;
 	sc_inout< bool > end;
 	sc_fifo<Instruction> fifo_buffer;
+
+	//functional units
+	
 	//sc_in<Instruction> issued_instruction;
 	//sc_out<bool> ready_for_instruction;
 	

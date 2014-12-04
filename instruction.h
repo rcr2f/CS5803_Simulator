@@ -23,7 +23,6 @@ class Instruction{
 		_register m_destination, m_source1, m_source2;
 		Operation m_opcode;
 		opcode_length m_length;
-		int m_time_to_execute;
 
 	public:
 		Instruction();
@@ -31,12 +30,7 @@ class Instruction{
 		Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src2);
 		
 		friend ostream& operator<<(ostream& os, const Instruction& instr);
-		/*
-		void set_opcode(int opcode);
-		
-		int set_execution_time();
 
-		bool set_length_of_opcode();*/
 };
 
 #endif /* INSTRUCTION_H_ */
