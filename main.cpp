@@ -13,7 +13,9 @@
  * To run: ./CDC_Sim
  */
 
-#include "main.h"
+#include <systemc.h>
+#include "instruction.h"
+#include "instruction_buffer.cpp"
 
 
 //prompts user for which processor to run and returns the int corresponding to it
