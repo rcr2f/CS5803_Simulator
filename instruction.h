@@ -23,11 +23,15 @@ class Instruction{
 		_register m_destination, m_source1, m_source2;
 		Operation m_opcode;
 		opcode_length m_length;
+		int m_offset;
 
 	public:
 		Instruction();
 		
 		Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src2);
+		
+		//special constructor needed for branch
+		Instruction(Operation opcode, opcode_length length, int offset);
 		
 		friend ostream& operator<<(ostream& os, const Instruction& instr);
 

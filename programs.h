@@ -29,27 +29,27 @@ Instruction program2[] = {
     Instruction(float_add, SHORT, x7, x5, x4),
     Instruction(increment, LONG, a7, a7, k) 
     };
-    /*
+    
 Instruction program3[] = {
-	Instruction(increment, LONG, , , k),
-	Instruction(increment, LONG, , , k), 
-/*loop:	Instruction(increment, LONG, , , k), 
-	Instruction(increment, LONG, , , k),
-	Instruction(increment, LONG, , , k), 
-	Instruction(multiply, SHORT, ),
-	Instruction(increment, LONG, ),
-	Instruction(multiply, SHORT, ),
-	Instruction(increment, LONG, ),
-	Instruction(multiply, SHORT, ),
-	Instruction(float_add, SHORT, ),
-	Instruction(increment, LONG, ),
-	Instruction(float_add, SHORT, ),
-	Instruction(increment, LONG, ),
-	Instruction(increment, LONG, ),
-	Instruction(branch, ???) //TODO: add constructor for this?
-	};*/
+	Instruction(increment, LONG, a1, a1, k),
+	Instruction(increment, LONG, b0, x1, k), 
+/*loop:	*/Instruction(increment, LONG, a1, a2, k), 
+	Instruction(increment, LONG, a7, a7, k),
+	Instruction(increment, LONG, a1, a1, k), 
+	Instruction(multiply, SHORT, x0, x1, x1),
+	Instruction(increment, LONG, x2, b1, k),
+	Instruction(multiply, SHORT, x3, x0, x2),
+	Instruction(increment, LONG, x2, b2, k),
+	Instruction(multiply, SHORT, x4, x1, x2),
+	Instruction(float_add, SHORT, x3, x3, x4),
+	Instruction(increment, LONG, x2, b3, k),
+	Instruction(float_add, SHORT, x7, x2, x3),
+	Instruction(increment, LONG, b0, b0, k),
+	Instruction(increment, LONG, a7, a7, k),
+	Instruction(branch, SHORT, -13)
+	};
 
-int size[] = {0, 7, 10, 63};
+int size[] = {0, 7, 10, 16};
 
 
 #endif /*  PROGRAMS_H_ */

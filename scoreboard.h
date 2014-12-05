@@ -10,7 +10,6 @@
 
 #include <systemc.h>
 //#include "register_lib.h" rebecca
-//rebecca
 #include "functional_unit_lib.cpp"
 #include "instruction.h"
 #include "enums.h"
@@ -127,6 +126,7 @@ SC_MODULE (SCOREBOARD){
 		
 		if(fifo_buffer.nb_read(next_instruction)) {
 			cout << sc_time_stamp() << " packet: " << next_instruction << endl;
+			cout << "CYCLE_DELAY: " << m_mult->cycle_delay << endl;
 		}
 		else 
 			count++;

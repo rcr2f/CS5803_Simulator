@@ -25,11 +25,20 @@ Instruction::Instruction(Operation opcode, opcode_length length, _register dest,
 	m_length = length;
 }
 
+//special constructor needed for branch
+Instruction::Instruction(Operation opcode, opcode_length length, int offset)
+{
+	m_opcode = opcode;
+	m_length = length;
+	m_offset = offset;
+}
+
 ostream& operator<<(ostream& os, const Instruction& instr)
 {
 	os << "opcode:" << instr.m_opcode << endl;
-	os << "dest reg:" << instr.m_destination << endl;
-	os << "m_source1:" << instr.m_source1 << endl;
-	os << "m_source2:" << instr.m_source2 << endl;
+	os << "length:" << instr.m_length << endl;
+	//os << "dest reg:" << instr.m_destination << endl;
+	//os << "m_source1:" << instr.m_source1 << endl;
+	//os << "m_source2:" << instr.m_source2 << endl;
 	return os;
 }

@@ -24,6 +24,7 @@ void MULTIPLIER::multiply(void){
 	}
 	else
 		cycle_delay = 5;
+		
 
 }//end multiply
 

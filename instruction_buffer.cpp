@@ -44,13 +44,11 @@ SC_MODULE(instruction_buffer) {
 void instruction_buffer::m_issue_instruction(void) {
 	Instruction next_instruction;
 	if( fifo_buffer.nb_read(next_instruction)) {
-		//TODO: Send to Scoreboard
-		cout << sc_time_stamp() << " packet: " << next_instruction << endl;
 		m_scoreboard->fifo_buffer.write(next_instruction);
 	}
 	else if(instruction_addr == size[m_program_selection]) {
 		//TODO: End at final instruction execution, not here
-		cout << sc_time_stamp() << " simulation complete" <<endl;
+		cout << sc_time_stamp() << " done sending instructions..waiting for them to complete" <<endl;
 		//end.write(true);
 	}
 	else {
@@ -70,6 +68,11 @@ void instruction_buffer::m_instruction_source(void) {
 	}
 	else if(2 == m_program_selection) {
 		fifo_buffer.write(program2[instruction_addr]);
+
+		instruction_addr++;
+	}
+	else if(3 == m_program_selection){
+		fifo_buffer.write(program3[instruction_addr]);
 
 		instruction_addr++;
 	}
