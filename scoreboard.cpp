@@ -58,6 +58,7 @@ bool SCOREBOARD::check_unit_haz(void){
 	 * TODO - Perform check here
 	 */
 
+
 	hazard_buffer.write(next_instruction);
 	return unit_haz;
 }//end check_unit_haz

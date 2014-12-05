@@ -9,7 +9,7 @@
 #define SCOREBOARD_H_
 
 #include <systemc.h>
-//#include "register_lib.h" rebecca
+#include "register_lib.h"
 #include "functional_unit_lib.cpp"
 #include "instruction.h"
 #include "enums.h"
@@ -20,11 +20,11 @@ SC_MODULE (SCOREBOARD){
 	//sc_signal<bool> unitStatSig; rebecca
 	//sc_signal< sc_uint<4> > unitSelectSig; rebecca
 
-	//rebecca
 	sc_in_clk clock;
 	sc_inout< bool > end;
 	sc_fifo<Instruction> fifo_buffer;
 	sc_fifo<Instruction> hazard_buffer;
+	sc_fifo<Operation> unit_select_buffer;
 	sc_inout< bool > is_CDC6600;
 	
 	//functional units
@@ -37,6 +37,9 @@ SC_MODULE (SCOREBOARD){
 	BOOLEAN * m_bool;
 	BRANCHER * m_branch;
 	
+	//Functional unit status register - fred
+	FUNC_UNIT_STATUS * unit_stat_reg;
+
 	//sc_in<Instruction> issued_instruction;
 	//sc_out<bool> ready_for_instruction;
 	
@@ -142,6 +145,7 @@ SC_MODULE (SCOREBOARD){
 		
 		sc_fifo<Instruction> fifo_buffer (32);
 		sc_fifo<Instruction> hazard_buffer (32);
+		sc_fifo<Operation> unit_select_buffer (32);
 		
 		//initializing functional units
 		m_mult = new MULTIPLIER("Multiplier0");
@@ -176,6 +180,10 @@ SC_MODULE (SCOREBOARD){
 		m_branch->clock(clock);
 		m_branch->is_CDC6600(is_CDC6600);
 		
+		//Adding functional unit status register - fred
+		unit_stat_reg = new FUNC_UNIT_STATUS ("Func Unit Status Reg");
+
+
 /*rebecca
 		SC_METHOD (issue_stage);
 		//sensitivity here
