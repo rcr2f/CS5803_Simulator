@@ -27,7 +27,7 @@ SC_MODULE (MULTIPLIER) {
    sc_in<bool> op_ready;
    sc_out<int> cycle_delay;
 
-    sc_in<bool> is_CDC600;
+    sc_in<bool> is_CDC6600;
     sc_in<bool> reset_count; //new instruction issued
    	sc_out<bool> result;
 	sc_out<bool> busy;
@@ -36,9 +36,7 @@ SC_MODULE (MULTIPLIER) {
 
    //Process prototypes/declarations
    void multiply (void);
-   {
 
-   }
 
    SC_CTOR (MULTIPLIER){
       SC_METHOD (multiply);
@@ -66,6 +64,11 @@ SC_MODULE (DIVIDER) {
 	   sc_in<bool> op_ready;
 	   sc_out<int> cycle_delay;
 
+	    sc_in<bool> is_CDC6600;
+	    sc_in<bool> reset_count; //new instruction issued
+	   	sc_out<bool> result;
+		sc_out<bool> busy;
+
 	   //Process prototypes/declarations
 	   void divide (void);
 
@@ -89,9 +92,14 @@ SC_MODULE (DIVIDER) {
  *******************************/
 SC_MODULE (FIXED_ADD) {
 
-	//ports, processes, internal data
+	///ports, processes, internal data
 	   sc_in<bool> op_ready;
 	   sc_out<int> cycle_delay;
+
+	    sc_in<bool> is_CDC6600;
+	    sc_in<bool> reset_count; //new instruction issued
+	   	sc_out<bool> result;
+		sc_out<bool> busy;
 
 	   //Process prototypes/declarations
 	   void add (void);
@@ -118,6 +126,11 @@ SC_MODULE (FLOATING_ADD) {
 	//ports, processes, internal data
 	   sc_in<bool> op_ready;
 	   sc_out<int> cycle_delay;
+
+	    sc_in<bool> is_CDC6600;
+	    sc_in<bool> reset_count; //new instruction issued
+	   	sc_out<bool> result;
+		sc_out<bool> busy;
 
 	   //Process prototypes/declarations
 	   void add (void);
@@ -146,6 +159,11 @@ SC_MODULE (INCREMENTER) {
 	   sc_in<bool> op_ready;
 	   sc_out<int> cycle_delay;
 
+	    sc_in<bool> is_CDC6600;
+	    sc_in<bool> reset_count; //new instruction issued
+	   	sc_out<bool> result;
+		sc_out<bool> busy;
+
 	   //Process prototypes/declarations
 	   void increment (void);
 
@@ -168,9 +186,14 @@ SC_MODULE (INCREMENTER) {
  *******************************/
 SC_MODULE (SHIFTER) {
 
-	//ports, processes, internal data
+	///ports, processes, internal data
 	   sc_in<bool> op_ready;
 	   sc_out<int> cycle_delay;
+
+	    sc_in<bool> is_CDC6600;
+	    sc_in<bool> reset_count; //new instruction issued
+	   	sc_out<bool> result;
+		sc_out<bool> busy;
 
 	   //Process prototypes/declarations
 	   void shift (void);
@@ -198,6 +221,11 @@ SC_MODULE (BOOLEAN) {
 	   sc_in<bool> op_ready;
 	   sc_out<int> cycle_delay;
 
+	    sc_in<bool> is_CDC6600;
+	    sc_in<bool> reset_count; //new instruction issued
+	   	sc_out<bool> result;
+		sc_out<bool> busy;
+
 	   //Process prototypes/declarations
 	   void logic_operation (void);
 
@@ -223,6 +251,11 @@ SC_MODULE (BRANCHER) {
 	//ports, processes, internal data
 	   sc_in<bool> op_ready;
 	   sc_out<int> cycle_delay;
+
+	    sc_in<bool> is_CDC6600;
+	    sc_in<bool> reset_count; //new instruction issued
+	   	sc_out<bool> result;
+		sc_out<bool> busy;
 
 	   //Process prototypes/declarations
 	   void branch (void);

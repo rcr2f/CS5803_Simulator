@@ -19,9 +19,11 @@
  *******************************/
 void MULTIPLIER::multiply(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 		cycle_delay.write(10);
 	}
+	else
+		cycle_delay.write(5);
 
 }//end multiply
 
@@ -36,9 +38,11 @@ void MULTIPLIER::multiply(void){
  *******************************/
 void DIVIDER::divide(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 			cycle_delay.write(29);
 		}
+	else
+		cycle_delay.write(20);
 
 }//end divide
 
@@ -53,9 +57,11 @@ void DIVIDER::divide(void){
  *******************************/
 void FIXED_ADD::add(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 		cycle_delay.write(3);
 	}
+	else
+		cycle_delay.write(2);
 
 }//end add
 
@@ -70,9 +76,11 @@ void FIXED_ADD::add(void){
  *******************************/
 void FLOATING_ADD::add(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 		cycle_delay.write(4);
 	}
+	else
+		cycle_delay.write(4);
 
 }//end add
 
@@ -87,9 +95,11 @@ void FLOATING_ADD::add(void){
  *******************************/
 void INCREMENTER::increment(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 		cycle_delay.write(3);
 	}
+	else
+		cycle_delay.write(2);
 
 }//end increment
 
@@ -104,9 +114,11 @@ void INCREMENTER::increment(void){
  *******************************/
 void SHIFTER::shift(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 		cycle_delay.write(4);
 	}
+	else
+		cycle_delay.write(2);
 
 }//end shift
 
@@ -121,9 +133,11 @@ void SHIFTER::shift(void){
  *******************************/
 void BOOLEAN::logic_operation(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 		cycle_delay.write(3);
 	}
+	else
+		cycle_delay.write(2);
 
 }//end logic_operation
 
@@ -137,9 +151,12 @@ void BOOLEAN::logic_operation(void){
  *******************************/
 void BRANCHER::branch(void){
 
-	if (op_ready){
+	if (op_ready && is_CDC6600){
 		cycle_delay.write(14);
 	}
+	else
+		cycle_delay.write(14);
+		//CDC7600 has no branch unit?
 
 }//end branch
 
