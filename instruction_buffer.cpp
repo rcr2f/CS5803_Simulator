@@ -22,12 +22,14 @@ SC_MODULE(instruction_buffer) {
 	
 	int m_program_selection;
 	int instruction_addr;
+
 	//Constructor
 	SC_CTOR(instruction_buffer) {
 		SC_METHOD(m_issue_instruction);
 		sensitive << clock.pos();
 		SC_METHOD(m_instruction_source);
 
+		
 		sc_fifo<Instruction> fifo_buffer (16);
 		instruction_addr =0;
 		
@@ -47,9 +49,7 @@ void instruction_buffer::m_issue_instruction(void) {
 		m_scoreboard->fifo_buffer.write(next_instruction);
 	}
 	else if(instruction_addr == size[m_program_selection]) {
-		//TODO: End at final instruction execution, not here
 		cout << sc_time_stamp() << " done sending instructions..waiting for them to complete" <<endl;
-		//end.write(true);
 	}
 	else {
 		cout << sc_time_stamp() << " instruction pipeline empty" <<endl;		
@@ -59,24 +59,34 @@ void instruction_buffer::m_issue_instruction(void) {
 
 void instruction_buffer::m_instruction_source(void) {
 	if(instruction_addr >= size[m_program_selection])
-		//fifo_buffer.write(Instruction());
 		return;
 	else if(1 == m_program_selection) {
 		fifo_buffer.write(program1[instruction_addr]);
-
 		instruction_addr++;
+		
+		next_trigger(1, SC_NS);
 	}
 	else if(2 == m_program_selection) {
 		fifo_buffer.write(program2[instruction_addr]);
-
 		instruction_addr++;
+		
+		next_trigger(1, SC_NS);
 	}
 	else if(3 == m_program_selection){
 		fifo_buffer.write(program3[instruction_addr]);
 
-		instruction_addr++;
+		if(program3[instruction_addr].m_opcode == branch && program_3_loop > 0) {
+			instruction_addr += program3[instruction_addr].m_offset;
+			program_3_loop-=1;
+		}
+		else {
+			instruction_addr++;
+		}
+		
+		next_trigger(2, SC_NS);
 	}
-	next_trigger(1, SC_NS);
+	
+
 }
 	
 	

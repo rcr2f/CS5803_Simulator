@@ -51,5 +51,7 @@ Instruction program3[] = {
 
 int size[] = {0, 7, 10, 16};
 
+int program_3_loop = 5;
+
 
 #endif /*  PROGRAMS_H_ */

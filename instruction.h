@@ -28,7 +28,7 @@ class Instruction{
 	public:
 		Instruction();
 		
-		Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src2);
+		Instruction(Operation opcode, opcode_length length, _register dest, _register src1,  _register src2);
 		
 		//special constructor needed for branch
 		Instruction(Operation opcode, opcode_length length, int offset);
