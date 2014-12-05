@@ -25,6 +25,7 @@ SC_MODULE (SCOREBOARD){
 	sc_in_clk clock;
 	sc_inout< bool > end;
 	sc_fifo<Instruction> fifo_buffer;
+	sc_fifo<Instruction> hazard_buffer;
 	sc_inout< bool > is_CDC6600;
 	
 	//functional units
@@ -70,10 +71,12 @@ SC_MODULE (SCOREBOARD){
 
 
 	//Process declarations/prototypes
+	void issue_stage(void);
+	
 /*rebecca
 
 	//FOUR STAGES OF SCOREBOARD CONTROL
-	void issue_stage(void);
+	
 	void readop_stage(void);
 	void execute_stage(void);
 	void writebk_stage(void);
@@ -111,11 +114,12 @@ SC_MODULE (SCOREBOARD){
 	void read_operand_status(void);
 	void read_unit_status(void);
 */
-/*rebecca
 	//Helper function declarations/prototypes
-	void decode_short (shortInstruct);
-	void decode_long (longInstruct);
-*/
+	bool check_unit_haz(void);
+	bool check_data_haz(void);
+	
+//	void decode_short (shortInstruct);
+	
 	int count;
 	void test(void)
 	{
@@ -137,6 +141,7 @@ SC_MODULE (SCOREBOARD){
 		sensitive << clock.pos();
 		
 		sc_fifo<Instruction> fifo_buffer (32);
+		sc_fifo<Instruction> hazard_buffer (32);
 		
 		//initializing functional units
 		m_mult = new MULTIPLIER("Multiplier0");
