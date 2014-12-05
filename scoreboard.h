@@ -11,6 +11,7 @@
 #include <systemc.h>
 //#include "register_lib.h" rebecca
 //rebecca
+#include "functional_unit_lib.cpp"
 #include "instruction.h"
 #include "enums.h"
 
@@ -24,8 +25,17 @@ SC_MODULE (SCOREBOARD){
 	sc_in_clk clock;
 	sc_inout< bool > end;
 	sc_fifo<Instruction> fifo_buffer;
-
+	sc_inout< bool > is_CDC6600;
+	
 	//functional units
+	MULTIPLIER * m_mult;
+	DIVIDER * m_div;
+	FIXED_ADD * m_fixed_add;
+	FLOATING_ADD * m_floating_add;
+	INCREMENTER * m_inc;
+	SHIFTER * m_shift;
+	BOOLEAN * m_bool;
+	BRANCHER * m_branch;
 	
 	//sc_in<Instruction> issued_instruction;
 	//sc_out<bool> ready_for_instruction;
@@ -127,6 +137,39 @@ SC_MODULE (SCOREBOARD){
 		sensitive << clock.pos();
 		
 		sc_fifo<Instruction> fifo_buffer (32);
+		
+		//initializing functional units
+		m_mult = new MULTIPLIER("Multiplier0");
+		m_mult->clock(clock);
+		m_mult->is_CDC6600(is_CDC6600);
+		
+		m_div = new DIVIDER("Divider0");
+		m_div->clock(clock);;
+		m_div->is_CDC6600(is_CDC6600);
+		
+		m_fixed_add = new FIXED_ADD("Fixed_Add0");
+		m_fixed_add->clock(clock);
+		m_fixed_add->is_CDC6600(is_CDC6600);
+		
+		m_floating_add = new FLOATING_ADD("Floating_Add0");
+		m_floating_add->clock(clock);
+		m_floating_add->is_CDC6600(is_CDC6600);
+		
+		m_inc = new INCREMENTER("Incrementer0");
+		m_inc->clock(clock);
+		m_inc->is_CDC6600(is_CDC6600);
+		
+		m_shift = new SHIFTER("Shifter0");
+		m_shift->clock(clock);
+		m_shift->is_CDC6600(is_CDC6600);
+		
+		m_bool = new BOOLEAN("Boolean0");
+		m_bool->clock(clock);
+		m_bool->is_CDC6600(is_CDC6600);
+		
+		m_branch = new BRANCHER("Brancher0");
+		m_branch->clock(clock);
+		m_branch->is_CDC6600(is_CDC6600);
 		
 /*rebecca
 		SC_METHOD (issue_stage);

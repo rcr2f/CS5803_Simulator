@@ -3,6 +3,7 @@
  *
  *  Created on: Nov 17, 2014
  *      Author: fred
+ *              rebecca
  */
 
 #ifndef FUNCTIONAL_UNIT_LIB_H_
@@ -22,29 +23,23 @@
  *
  *******************************/
 SC_MODULE (MULTIPLIER) {
-
-   //ports, processes, internal data
-   sc_in<bool> op_ready;
-   sc_out<int> cycle_delay;
-
-    sc_in<bool> is_CDC6600;
-    sc_in<bool> reset_count; //new instruction issued
-   	sc_out<bool> result;
-	sc_out<bool> busy;
-
 	
-
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
    //Process prototypes/declarations
    void multiply (void);
 
 
    SC_CTOR (MULTIPLIER){
-      SC_METHOD (multiply);
-      sensitive << op_ready;
-
+      SC_THREAD (multiply);
+      sensitive << is_CDC6600;
+      
    } //end SC_CTOR
-
-
 
 
 }; //end multiplier
@@ -59,23 +54,20 @@ SC_MODULE (MULTIPLIER) {
  *
  *******************************/
 SC_MODULE (DIVIDER) {
+	
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
+   //Process prototypes/declarations
+   void divide (void);
 
-	//ports, processes, internal data
-	   sc_in<bool> op_ready;
-	   sc_out<int> cycle_delay;
-
-	    sc_in<bool> is_CDC6600;
-	    sc_in<bool> reset_count; //new instruction issued
-	   	sc_out<bool> result;
-		sc_out<bool> busy;
-
-	   //Process prototypes/declarations
-	   void divide (void);
-
-	   SC_CTOR (DIVIDER){
-	      SC_METHOD (divide);
-	      sensitive << op_ready;
-
+   SC_CTOR (DIVIDER){
+      SC_THREAD (divide);
+      sensitive << is_CDC6600;
 
    } //end SC_CTOR
 
@@ -91,23 +83,21 @@ SC_MODULE (DIVIDER) {
  *
  *******************************/
 SC_MODULE (FIXED_ADD) {
+	
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
+   //Process prototypes/declarations
+   void add (void);
 
-	///ports, processes, internal data
-	   sc_in<bool> op_ready;
-	   sc_out<int> cycle_delay;
-
-	    sc_in<bool> is_CDC6600;
-	    sc_in<bool> reset_count; //new instruction issued
-	   	sc_out<bool> result;
-		sc_out<bool> busy;
-
-	   //Process prototypes/declarations
-	   void add (void);
-
-	   SC_CTOR (FIXED_ADD){
-	      SC_METHOD (add);
-	      sensitive << op_ready;
-
+   SC_CTOR (FIXED_ADD){
+      SC_THREAD (add);
+      sensitive << is_CDC6600;
+      
    } //end SC_CTOR
 
 }; //end fixed
@@ -122,23 +112,20 @@ SC_MODULE (FIXED_ADD) {
  *
  *******************************/
 SC_MODULE (FLOATING_ADD) {
+	
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
+   //Process prototypes/declarations
+   void add (void);
 
-	//ports, processes, internal data
-	   sc_in<bool> op_ready;
-	   sc_out<int> cycle_delay;
-
-	    sc_in<bool> is_CDC6600;
-	    sc_in<bool> reset_count; //new instruction issued
-	   	sc_out<bool> result;
-		sc_out<bool> busy;
-
-	   //Process prototypes/declarations
-	   void add (void);
-
-	   SC_CTOR (FLOATING_ADD){
-	      SC_METHOD (add);
-	      sensitive << op_ready;
-
+   SC_CTOR (FLOATING_ADD){
+      SC_THREAD (add);
+      sensitive << is_CDC6600;
 
    } //end SC_CTOR
 
@@ -154,22 +141,20 @@ SC_MODULE (FLOATING_ADD) {
  *
  *******************************/
 SC_MODULE (INCREMENTER) {
+	
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
+   //Process prototypes/declarations
+   void increment (void);
 
-	//ports, processes, internal data
-	   sc_in<bool> op_ready;
-	   sc_out<int> cycle_delay;
-
-	    sc_in<bool> is_CDC6600;
-	    sc_in<bool> reset_count; //new instruction issued
-	   	sc_out<bool> result;
-		sc_out<bool> busy;
-
-	   //Process prototypes/declarations
-	   void increment (void);
-
-	   SC_CTOR (INCREMENTER){
-	      SC_METHOD (increment);
-	      sensitive << op_ready;
+   SC_CTOR (INCREMENTER){
+      SC_THREAD (increment);
+      sensitive << is_CDC6600;
 
    } //end SC_CTOR
 
@@ -185,22 +170,20 @@ SC_MODULE (INCREMENTER) {
  *
  *******************************/
 SC_MODULE (SHIFTER) {
+	
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
+   //Process prototypes/declarations
+   void shift (void);
 
-	///ports, processes, internal data
-	   sc_in<bool> op_ready;
-	   sc_out<int> cycle_delay;
-
-	    sc_in<bool> is_CDC6600;
-	    sc_in<bool> reset_count; //new instruction issued
-	   	sc_out<bool> result;
-		sc_out<bool> busy;
-
-	   //Process prototypes/declarations
-	   void shift (void);
-
-	   SC_CTOR (SHIFTER){
-	      SC_METHOD (shift);
-	      sensitive << op_ready;
+   SC_CTOR (SHIFTER){
+      SC_THREAD (shift);
+      sensitive << is_CDC6600;
 
    } //end SC_CTOR
 
@@ -216,23 +199,20 @@ SC_MODULE (SHIFTER) {
  *
  *******************************/
 SC_MODULE (BOOLEAN) {
+	
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
+   //Process prototypes/declarations
+   void logic_operation (void);
 
-	//ports, processes, internal data
-	   sc_in<bool> op_ready;
-	   sc_out<int> cycle_delay;
-
-	    sc_in<bool> is_CDC6600;
-	    sc_in<bool> reset_count; //new instruction issued
-	   	sc_out<bool> result;
-		sc_out<bool> busy;
-
-	   //Process prototypes/declarations
-	   void logic_operation (void);
-
-	   SC_CTOR (BOOLEAN){
-	      SC_METHOD (logic_operation);
-	      sensitive << op_ready;
-
+   SC_CTOR (BOOLEAN){
+      SC_THREAD (logic_operation);
+      sensitive << is_CDC6600;
 
    } //end SC_CTOR
 
@@ -247,23 +227,20 @@ SC_MODULE (BOOLEAN) {
  *
  *******************************/
 SC_MODULE (BRANCHER) {
+	
+   //ports, processes, internal data
+   sc_in_clk clock;   
+   sc_in<bool> is_CDC6600;
+   
+   //time to complete execution
+   int cycle_delay;
+   
+   //Process prototypes/declarations
+   void branch (void);
 
-	//ports, processes, internal data
-	   sc_in<bool> op_ready;
-	   sc_out<int> cycle_delay;
-
-	    sc_in<bool> is_CDC6600;
-	    sc_in<bool> reset_count; //new instruction issued
-	   	sc_out<bool> result;
-		sc_out<bool> busy;
-
-	   //Process prototypes/declarations
-	   void branch (void);
-
-	   SC_CTOR (BRANCHER){
-	      SC_METHOD (branch);
-	      sensitive << op_ready;
-
+   SC_CTOR (BRANCHER){
+      SC_THREAD (branch);
+      sensitive << is_CDC6600;
 
    } //end SC_CTOR
 

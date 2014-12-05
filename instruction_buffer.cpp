@@ -13,14 +13,14 @@
 SC_MODULE(instruction_buffer) {
 	sc_in_clk clock;
 	sc_inout< bool > end; 
-
+	sc_inout< bool > is_CDC6600;
+	
 	void m_issue_instruction(void);
 	void m_instruction_source(void);
 	
 	SCOREBOARD * m_scoreboard;
 	
 	int m_program_selection;
-	int m_processor_selection;
 	int instruction_addr;
 	//Constructor
 	SC_CTOR(instruction_buffer) {
@@ -34,7 +34,7 @@ SC_MODULE(instruction_buffer) {
 		m_scoreboard = new SCOREBOARD("scoreboard0");
 		m_scoreboard->clock(clock);
 		m_scoreboard->end(end);
-		//m_scoreboard->fifo
+		m_scoreboard->is_CDC6600(is_CDC6600);
 		
 	}
 	

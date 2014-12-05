@@ -30,8 +30,11 @@ int sc_main (int argc, char* argv[])
 	cout << endl << "Welcome to the CDC6600/CDC7600 simulator " << endl;
 
 	int processor_selection = get_processor_choice();
+	bool is_CDC6600 = false;
 	if (0 == processor_selection)
 		return (0);
+	else if (1 == processor_selection)
+		is_CDC6600 = true;
 		
 	int program_selection = get_program_choice();
 	if (0 == program_selection)
@@ -39,12 +42,14 @@ int sc_main (int argc, char* argv[])
 
 	sc_signal< bool > clock;
 	sc_signal< bool > end;
+	sc_signal< bool > processor_choice;
 	
 	instruction_buffer instruction_buf("instruction_buf");
 	instruction_buf.clock(clock);
 	instruction_buf.end(end);
+	instruction_buf.is_CDC6600(processor_choice);
 	instruction_buf.m_program_selection = program_selection;
-	instruction_buf.m_processor_selection = processor_selection;
+	processor_choice = is_CDC6600;
 	
 	sc_start(1, SC_NS);
 	
