@@ -16,6 +16,7 @@
 
 #include <systemc.h>
 #include "functional_unit_lib.h"
+#include "enums.h"
 
 /************************************************
  *
@@ -154,8 +155,8 @@ SC_MODULE (FUNC_OP_REGS){
 
 	//ports, processes, internal data
 	sc_in< sc_uint<4> > regSelect;
-	//sc_in< sc_uint<OPREG_WIDTH> > dataIn;
-	//sc_out< sc_uint<OPREG_WIDTH> > dataOut;
+	sc_in< sc_uint<OPREG_WIDTH> > dataIn;
+	sc_out< sc_uint<OPREG_WIDTH> > dataOut;
 	sc_uint<OPREG_WIDTH> opReg[10];
 
 	//Process prototypes/declarations
@@ -214,44 +215,47 @@ SC_MODULE (HOPPER_REGS){
  *
  ***********************************************/
 
-/*
+
 struct STATUS_REG {
-	sc_bit float_adder_stat;
-	sc_bit multiply_one_stat;
-	sc_bit multiply_two_stat;
-	sc_bit divide_stat;
-	sc_bit fixed_add_stat;
-	sc_bit increment_one_stat;
-	sc_bit increment_two_stat;
-	sc_bit boolean_stat;
-	sc_bit shifter_stat;
-	sc_bit branch_stat;
+	Unit func_unit;
+	bool busy;
+	int time_until_free;
+	_register dest_reg;
+	int time_until_complete;
 };
-*/
+
 
 SC_MODULE (FUNC_UNIT_STATUS){
 
 	//ports, processes, internal data
-	sc_in< sc_uint<4> > unitSelect;
-	sc_in<bool> inRequest, statusCheck;
-	sc_out<bool> outStatus;
-	bool statusReg[10];
-
+	sc_in_clk clock;
+	sc_inout< bool > end;
+	static const int num_units = 10;
+	STATUS_REG m_statusReg[num_units];
+	
+	//members for adding a new instruction
+	Unit func_unit;
+	int time_until_free;
+	int time_until_complete;
+	_register dest_reg;
 
 	//Process prototypes/declarations
-	void add_request (void);
-	void output_status (void);
+	void initialize_units(void);
+	void add_request(void);
+	void output_status(void);
+	void update_status_table(void);
 
 	//Helper function prototypes/declarations
-	void make_available (sc_uint<4> );
+	//void make_available (sc_uint<4> );
 
 	SC_CTOR(FUNC_UNIT_STATUS){
-		SC_METHOD(add_request);
-		sensitive << inRequest << unitSelect;
-
+		SC_METHOD(initialize_units);
+		
 		SC_METHOD(output_status);
-		sensitive << statusCheck << unitSelect;
-
+		sensitive << clock.pos();
+		
+		SC_METHOD(update_status_table);
+		sensitive << clock.pos();
 
 	}//end SC_CTOR
 

@@ -36,13 +36,13 @@ enum _register {
  };
         
 enum Operation {
-	multiply,
-	divide,
 	fixed_add,
 	float_add,
 	boolean,
 	shift,
 	branch,
+	divide,
+	multiply,
 	increment
 };
 		
@@ -52,16 +52,16 @@ enum opcode_length {
 };
 
 enum Unit {
-	float_adder,
-	multiplier1,
-	multiplier2,
-	divider,
 	fixed_adder,
-	incrementer1,
-	incrementer2,
+	float_adder,
 	bool_unit,
 	shifter,
-	brancher
+	brancher,
+	divider,
+	multiplier1,
+	multiplier2,
+	incrementer1,
+	incrementer2
 };
 
 #endif /* ENUMS_H_*/

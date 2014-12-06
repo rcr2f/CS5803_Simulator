@@ -30,6 +30,7 @@ SC_MODULE (MULTIPLIER) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void multiply (void);
@@ -61,6 +62,7 @@ SC_MODULE (DIVIDER) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void divide (void);
@@ -90,6 +92,7 @@ SC_MODULE (FIXED_ADD) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void add (void);
@@ -119,6 +122,7 @@ SC_MODULE (FLOATING_ADD) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void add (void);
@@ -148,6 +152,7 @@ SC_MODULE (INCREMENTER) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void increment (void);
@@ -177,6 +182,7 @@ SC_MODULE (SHIFTER) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void shift (void);
@@ -206,6 +212,7 @@ SC_MODULE (BOOLEAN) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void logic_operation (void);
@@ -234,6 +241,7 @@ SC_MODULE (BRANCHER) {
    
    //time to complete execution
    int cycle_delay;
+   int time_until_free;
    
    //Process prototypes/declarations
    void branch (void);

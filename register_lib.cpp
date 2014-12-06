@@ -127,20 +127,53 @@
  * Modified:	N/A
  *
  ***********************************************/
-	void FUNC_UNIT_STATUS::add_request(void){
-		sc_uint<4> index = unitSelect.read();
-		if (statusReg[index]){
-			std::cout << "Unit Busy \n";
-			//exit (1)
+	void FUNC_UNIT_STATUS::initialize_units(void){
+		Unit func_unit = float_adder;
+		for(int i=0; i<num_units; i++) {
+			m_statusReg[i].func_unit=(Unit)(func_unit+i);
+			m_statusReg[i].dest_reg = k;
 		}
-		else
-			statusReg[index] = 1;
+			
+	}
+ 
+	void FUNC_UNIT_STATUS::add_request(void){
+		m_statusReg[(int)func_unit].time_until_free = time_until_free;
+		m_statusReg[(int)func_unit].time_until_complete = time_until_complete;
+		m_statusReg[(int)func_unit].dest_reg = dest_reg;
+		if(m_statusReg[(int)func_unit].time_until_free != 0) {
+			m_statusReg[(int)func_unit].busy = true;
+		}
 	}//end add_request
 
 	void FUNC_UNIT_STATUS::output_status(void){
-		sc_uint<4> index = unitSelect.read();
-		outStatus.write(statusReg[index]);
+		//sc_uint<4> index = unitSelect.read();
+		//outStatus.write(statusReg[index]);
 	}//end output_status
+	
+	void FUNC_UNIT_STATUS::update_status_table(void) {
+		bool simulation_complete = true; 
+		for(int i=0; i<num_units; i++) {
+			if(m_statusReg[i].time_until_free > 0) {
+				m_statusReg[i].time_until_free--;
+				if(m_statusReg[i].time_until_free == 0) {
+					m_statusReg[i].busy = false;
+					m_statusReg[i].dest_reg = k;
+				}
+				else {		
+					m_statusReg[i].busy = true;
+				}
+			}
+			if(m_statusReg[i].time_until_complete > 0) {
+				m_statusReg[i].time_until_complete--;
+			}
+			if(m_statusReg[i].time_until_complete != 0) {
+				simulation_complete = false; //There might be a case (like after a branch) where this returns true, but there are still more instructions
+			}
+
+		}
+		//cout << "sim complete:" << simulation_complete << endl;
+
+	}
 
 /************************************************
  *
@@ -182,7 +215,7 @@
 
 	void GLOB_OP_STATUS::write_available(void){
 		sc_uint<3> index = regSelect.read();
-		statusReg[index] = write_available = 1;
+		statusReg[index].write_available = 1;
 	}//end write_available
 
 	/*
