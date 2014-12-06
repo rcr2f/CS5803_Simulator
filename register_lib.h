@@ -246,10 +246,12 @@ SC_MODULE (FUNC_UNIT_STATUS){
 	void update_status_table(void);
 
 	//Helper function prototypes/declarations
-	//void make_available (sc_uint<4> );
-
+	int count;
+	bool instructions_done;
 	SC_CTOR(FUNC_UNIT_STATUS){
-		SC_METHOD(initialize_units);
+		initialize_units();
+		count = 0;
+		instructions_done = false;
 		
 		SC_METHOD(output_status);
 		sensitive << clock.pos();

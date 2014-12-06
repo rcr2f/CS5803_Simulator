@@ -17,9 +17,11 @@ bool SCOREBOARD::check_data_haz(void){
 	
 	for(int i=0; i<unit_stat_reg->num_units; i++) {
 		if(cur_instr.m_source1 == unit_stat_reg->m_statusReg[i].dest_reg) {
+			cout <<"hazard in source 1:"<<cur_instr.m_source1<<endl;
 			return true;
 		}
 		else if (cur_instr.m_source2 == unit_stat_reg->m_statusReg[i].dest_reg && cur_instr.m_source2 != k) {
+			cout << "hazard in source 2:" << cur_instr.m_source2<<endl;
 			return true;
 		}
 	}
@@ -67,8 +69,9 @@ void SCOREBOARD::issue_stage(void){
 		else {
 			cout << sc_time_stamp() << " done sending instructions..waiting for them to complete" <<endl;
 			count++;
-			if(count > 5)
-				end = true;
+			if(count>5)
+				unit_stat_reg->instructions_done = true;
+				return;
 		}
 	}
 
@@ -96,7 +99,7 @@ void SCOREBOARD::issue_stage(void){
 				unit_stat_reg->func_unit = shifter;
 				break;
 			case branch:
-				unit_stat_reg->time_until_complete = m_branch->cycle_delay;
+				unit_stat_reg->time_until_complete = m_branch->cycle_delay + 2;
 				unit_stat_reg->func_unit = brancher;
 				break;
 			case divide:

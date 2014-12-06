@@ -132,6 +132,8 @@
 		for(int i=0; i<num_units; i++) {
 			m_statusReg[i].func_unit=(Unit)(func_unit+i);
 			m_statusReg[i].dest_reg = k;
+			m_statusReg[i].time_until_complete=0;
+			m_statusReg[i].time_until_free=0;
 		}
 			
 	}
@@ -157,7 +159,6 @@
 				m_statusReg[i].time_until_free--;
 				if(m_statusReg[i].time_until_free == 0) {
 					m_statusReg[i].busy = false;
-					m_statusReg[i].dest_reg = k;
 				}
 				else {		
 					m_statusReg[i].busy = true;
@@ -169,9 +170,21 @@
 			if(m_statusReg[i].time_until_complete != 0) {
 				simulation_complete = false; //There might be a case (like after a branch) where this returns true, but there are still more instructions
 			}
+			else
+				m_statusReg[i].dest_reg = k;
 
 		}
-		//cout << "sim complete:" << simulation_complete << endl;
+
+		//if(simulation_complete and )
+		//	count++;
+		if(simulation_complete and instructions_done) {
+			cout<<"SHUTTING DOWN THE SIMULATOR"<<endl;
+			cout<<"SHUTTING DOWN THE SIMULATOR"<<endl;
+			end = simulation_complete;
+		}
+		else {
+			end = false;
+		}
 
 	}
 

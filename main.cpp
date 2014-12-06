@@ -51,8 +51,12 @@ int sc_main (int argc, char* argv[])
 	instruction_buf.m_program_selection = program_selection;
 	processor_choice = is_CDC6600;
 	
+	clock = 0;
 	sc_start(1, SC_NS);
-	
+	clock = 1;
+	sc_start(1, SC_NS);
+
+	end = false;
 	int clock_cycles = 0;
 	while(end == false)
 	{
