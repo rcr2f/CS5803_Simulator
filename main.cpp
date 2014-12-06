@@ -66,6 +66,11 @@ int sc_main (int argc, char* argv[])
 		sc_start(1, SC_NS);
 		clock_cycles++;
 	}
+	
+	if(is_CDC6600)
+		clock_cycles+=5;
+	else
+		clock_cycles+=4;
 
 	
 	cout << endl << "Simulation complete!" << endl;

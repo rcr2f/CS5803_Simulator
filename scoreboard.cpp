@@ -17,11 +17,9 @@ bool SCOREBOARD::check_data_haz(void){
 	
 	for(int i=0; i<unit_stat_reg->num_units; i++) {
 		if(cur_instr.m_source1 == unit_stat_reg->m_statusReg[i].dest_reg) {
-			cout <<"hazard in source 1:"<<cur_instr.m_source1<<endl;
 			return true;
 		}
 		else if (cur_instr.m_source2 == unit_stat_reg->m_statusReg[i].dest_reg && cur_instr.m_source2 != k) {
-			cout << "hazard in source 2:" << cur_instr.m_source2<<endl;
 			return true;
 		}
 	}
@@ -81,6 +79,7 @@ void SCOREBOARD::issue_stage(void){
 
 	//If no conflicts proceed to issue instruction
 	if (!unit_haz && !data_haz){
+		cout << sc_time_stamp() << " Issuing Instruction" << endl;
 		switch (cur_instr.m_opcode) {
 			case fixed_add: 
 				unit_stat_reg->time_until_complete = m_fixed_add->cycle_delay;
