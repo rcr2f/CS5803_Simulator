@@ -17,7 +17,7 @@
 #include "instruction.h"
 #include "instruction_buffer.cpp"
 #include "timing_table.cpp"
-
+#include <string>
 
 //prompts user for which processor to run and returns the int corresponding to it
 int get_processor_choice();
@@ -41,8 +41,21 @@ int sc_main (int argc, char* argv[])
 	if (0 == program_selection)
 		return (0);
 	
+	string filename = "";
+	std::ostringstream s;
+	s << program_selection;
+	if(is_CDC6600)
+		filename = "CDC6600_program";
+	else
+		filename = "CDC7600_program";
+	
+	filename.append(s.str());
+	filename.append(".csv");
+
+	char file[20];
+	strcpy(file, filename.c_str());
 	//output the timing table
-	ofstream * outFile = new std::ofstream("CDC_Sim_Results.csv");
+	ofstream * outFile = new std::ofstream(file);
 	Timing_Table timing_table(outFile, size[program_selection], is_CDC6600);
 	int clock_cycles = 0;
 	sc_signal< int > sig_clock_cycles;
@@ -87,6 +100,7 @@ int sc_main (int argc, char* argv[])
 	cout << endl << "Simulation complete!" << endl;
 	cout << "\tClock Cycles: " << clock_cycles << endl;
 	cout << "\tExecution Time: " << sc_time_stamp() << endl << endl;
+	
 	return (0);
 }
 
