@@ -15,14 +15,14 @@ class Timing_Table {
 		int * m_fetch;
 		bool * store;
 		int * m_store;
-		
+		bool m_is6600;
 		int m_num_instr;
 		
 		ostream * outFile;
 		
 		Timing_Table() {}
 		
-		Timing_Table(ostream * out, int num_instr);
+		Timing_Table(ostream * out, int num_instr, bool is_CDC6600);
 		
 		void print();
 		

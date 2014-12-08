@@ -32,7 +32,8 @@ enum _register {
     b5,
     b6,
     b7,
-    k
+    k,
+    none
  };
         
 enum Operation {

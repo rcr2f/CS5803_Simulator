@@ -6,9 +6,7 @@
 
 #ifndef PROGRAMS_H_
 #define PROGRAMS_H_
-#include <fstream>
 
-//outFile;
 
 
 Instruction program1[] = {

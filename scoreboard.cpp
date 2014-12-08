@@ -14,13 +14,20 @@
 bool SCOREBOARD::check_data_haz(void){
 
 	bool data_haz = false;
-	
+	int stages = 1;
+	if(!is_CDC6600) {
+		stages = 4;
+	}
 	for(int i=0; i<unit_stat_reg->num_units; i++) {
-		if(cur_instr.m_source1 == unit_stat_reg->m_statusReg[i].dest_reg) {
-			return true;
-		}
-		else if (cur_instr.m_source2 == unit_stat_reg->m_statusReg[i].dest_reg && cur_instr.m_source2 != k) {
-			return true;
+		for(int j=0; j<stages; j++) {
+			if(unit_stat_reg->m_statusReg[i].instr_in_stage[j]) {
+				if(cur_instr.m_source1 == unit_stat_reg->m_statusReg[i].dest_reg[j]) {
+					return true;
+				}
+				else if (cur_instr.m_source2 == unit_stat_reg->m_statusReg[i].dest_reg[j] and cur_instr.m_source2 != k) {
+					return true;
+				}
+			}
 		}
 	}
 	return data_haz;
@@ -28,7 +35,7 @@ bool SCOREBOARD::check_data_haz(void){
 }//end check_data_haz
 
 bool SCOREBOARD::check_unit_haz(void){
-	bool unit_haz;
+	bool unit_haz = false;
 
 	switch (cur_instr.m_opcode) {
 		case multiply:
@@ -61,8 +68,8 @@ void SCOREBOARD::issue_stage(void){
 	if(fetch_instr) {
 		if(fifo_buffer.nb_read(cur_instr)) {
 			timing_table->m_issue[cur_instr.instr_count] = sig_clock_cycles;
-			cout << sc_time_stamp() << endl;
-			cout << cur_instr << endl;
+			//cout << sc_time_stamp() << endl;
+			//cout << cur_instr << endl;
 			fetch_instr = false;
 		}
 		else {
@@ -80,8 +87,9 @@ void SCOREBOARD::issue_stage(void){
 
 	//If no conflicts proceed to issue instruction
 	if (!unit_haz && !data_haz){
-		cout << sc_time_stamp() << " Issuing Instruction" << endl;
+		cout << sc_time_stamp() << " Starting Instruction" << endl;
 		timing_table->m_start[cur_instr.instr_count] = sig_clock_cycles;
+
 		switch (cur_instr.m_opcode) {
 			case fixed_add: 
 				unit_stat_reg->time_until_complete = m_fixed_add->cycle_delay;
@@ -115,23 +123,27 @@ void SCOREBOARD::issue_stage(void){
 				break;
 			case multiply:
 				if(unit_stat_reg->m_statusReg[(int)cur_instr.m_opcode].busy)
-					unit_stat_reg->func_unit = multiplier1;
-				else
 					unit_stat_reg->func_unit = multiplier2;
+				else
+					unit_stat_reg->func_unit = multiplier1;
 				unit_stat_reg->time_until_complete = m_mult->cycle_delay;
 				unit_stat_reg->time_until_free = m_mult->time_until_free;
 				break;
 			case increment:
 				if(unit_stat_reg->m_statusReg[(int)cur_instr.m_opcode+1].busy)
-					unit_stat_reg->func_unit = incrementer1;
-				else
 					unit_stat_reg->func_unit = incrementer2;
+				else
+					unit_stat_reg->func_unit = incrementer1;
 				unit_stat_reg->time_until_complete = m_inc->cycle_delay;
 				unit_stat_reg->time_until_free = m_inc->time_until_free;
 				break;
 			default:
 				break;
 			}
+
+		if(cur_instr.m_source2 == k)
+			timing_table->fetch[cur_instr.instr_count] = true;
+			
 		unit_stat_reg->dest_reg = cur_instr.m_destination;
 		unit_stat_reg->cur_instr = cur_instr.instr_count;
 		unit_stat_reg->add_request();

@@ -86,11 +86,15 @@ void instruction_buffer::m_instruction_source(void) {
 		wait(1, SC_NS);
 	}
 	else if(3 == m_program_selection){
-		fifo_buffer.write(program3[instruction_addr]);
+		if(instruction_addr<16)
+			fifo_buffer.write(program3[instruction_addr]);
 
-		if(program3[instruction_addr].m_opcode == branch && program_3_loop > 0) {
+		if(program3[instruction_addr].m_opcode == branch && program_3_loop > 1) {
 			instruction_addr += program3[instruction_addr].m_offset;
 			program_3_loop-=1;
+			for(int i=0; i<14; i++) {
+				program3[instruction_addr+i].instr_count = program3[instruction_addr+i].instr_count + (14);
+			}
 		}
 		else {
 			instruction_addr++;

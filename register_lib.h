@@ -221,9 +221,10 @@ struct STATUS_REG {
 	Unit func_unit;
 	bool busy;
 	int time_until_free;
-	_register dest_reg;
-	int time_until_complete;
-	int cur_instr;
+	bool instr_in_stage[4];
+	_register dest_reg[4];
+	int time_until_complete[4];
+	int cur_instr[4];
 };
 
 
@@ -241,6 +242,7 @@ SC_MODULE (FUNC_UNIT_STATUS){
 	int time_until_complete;
 	int cur_instr;
 	_register dest_reg;
+    sc_in< bool > is_CDC6600;
 
 	//Process prototypes/declarations
 	void initialize_units(void);

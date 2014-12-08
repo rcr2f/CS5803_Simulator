@@ -21,7 +21,7 @@ void MULTIPLIER::multiply(void){
 
 	if (is_CDC6600){
 		cycle_delay = 10;
-		time_until_free = 10;
+		time_until_free = 11;
 	}
 	else {
 		cycle_delay = 5;
@@ -44,7 +44,7 @@ void DIVIDER::divide(void){
 
 	if (is_CDC6600){
 			cycle_delay = 29;
-			time_until_free = 29;
+			time_until_free = 30;
 		}
 	else {
 		cycle_delay = 20;
@@ -66,7 +66,7 @@ void FIXED_ADD::add(void){
 
 	if (is_CDC6600){
 		cycle_delay = 3;
-		time_until_free = 3;
+		time_until_free = 4;
 	}
 	else {
 		cycle_delay = 2;
@@ -88,7 +88,7 @@ void FLOATING_ADD::add(void){
 
 	if (is_CDC6600){
 		cycle_delay = 4;
-		time_until_free = 4;
+		time_until_free = 5;
 	}
 	else {
 		cycle_delay = 4;
@@ -110,7 +110,7 @@ void INCREMENTER::increment(void){
 
 	if (is_CDC6600){
 		cycle_delay = 3;
-		time_until_free = 3;
+		time_until_free = 4;
 	}
 	else {
 		cycle_delay = 2;
@@ -132,7 +132,7 @@ void SHIFTER::shift(void){
 
 	if (is_CDC6600){
 		cycle_delay = 4;
-		time_until_free = 4;
+		time_until_free = 5;
 	}
 	else {
 		cycle_delay = 2;
@@ -154,7 +154,7 @@ void BOOLEAN::logic_operation(void){
 
 	if (is_CDC6600){
 		cycle_delay = 3;
-		time_until_free = 3;
+		time_until_free = 4;
 	}
 	else {
 		cycle_delay = 2;
@@ -175,7 +175,7 @@ void BRANCHER::branch(void){
 
 	if (is_CDC6600){
 		cycle_delay = 14;
-		time_until_free = 14;
+		time_until_free = 15;
 	}
 	else {
 		cycle_delay = 14;

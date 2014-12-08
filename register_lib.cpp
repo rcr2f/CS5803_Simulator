@@ -131,21 +131,29 @@
 		Unit func_unit = float_adder;
 		for(int i=0; i<num_units; i++) {
 			m_statusReg[i].func_unit=(Unit)(func_unit+i);
-			m_statusReg[i].dest_reg = k;
-			m_statusReg[i].time_until_complete=0;
+			m_statusReg[i].busy = false;
 			m_statusReg[i].time_until_free=0;
+			for(int j=0; j<4; j++) {
+				m_statusReg[i].dest_reg[j] = none;
+				m_statusReg[i].time_until_complete[j] = 0;
+				m_statusReg[i].instr_in_stage[j] = false;
+			}
 		}
 			
 	}
  
 	void FUNC_UNIT_STATUS::add_request(void){
-		m_statusReg[(int)func_unit].cur_instr = cur_instr;
+		int j =0;
+		if(!is_CDC6600) {
+			while(m_statusReg[(int)func_unit].instr_in_stage[j] == true and j<4) {j++;} }
+		m_statusReg[(int)func_unit].cur_instr[j] = cur_instr;
 		m_statusReg[(int)func_unit].time_until_free = time_until_free;
-		m_statusReg[(int)func_unit].time_until_complete = time_until_complete;
-		m_statusReg[(int)func_unit].dest_reg = dest_reg;
-		if(m_statusReg[(int)func_unit].time_until_free != 0) {
-			m_statusReg[(int)func_unit].busy = true;
-		}
+		m_statusReg[(int)func_unit].time_until_complete[j] = time_until_complete;
+		m_statusReg[(int)func_unit].dest_reg[j] = dest_reg;
+		m_statusReg[(int)func_unit].instr_in_stage[j] = true;
+		m_statusReg[(int)func_unit].busy = true;
+		cout<<"cur_instr:" << m_statusReg[(int)func_unit].cur_instr[j] << " time_until_free:" << m_statusReg[(int)func_unit].time_until_free << endl;
+
 	}//end add_request
 
 	void FUNC_UNIT_STATUS::output_status(void){
@@ -155,32 +163,49 @@
 	
 	void FUNC_UNIT_STATUS::update_status_table(void) {
 		bool simulation_complete = true; 
+		int stages = 1;
+		if(!is_CDC6600)
+			stages = 4;
 		for(int i=0; i<num_units; i++) {
 			if(m_statusReg[i].time_until_free > 0) {
 				m_statusReg[i].time_until_free--;
 				if(m_statusReg[i].time_until_free == 0) {
 					m_statusReg[i].busy = false;
-					timing_table->m_unit_ready[m_statusReg[i].cur_instr] = sig_clock_cycles;
+					for(int j=0; j<stages; j++) {
+						if(timing_table->m_unit_ready[m_statusReg[i].cur_instr[j]] == 0) {
+							timing_table->m_unit_ready[m_statusReg[i].cur_instr[j]] = sig_clock_cycles;
+							j = 4;
+							
+						}
+					}
+					cout<<"cLOCk cycles: " << sig_clock_cycles << endl;
 				}
 				else {		
 					m_statusReg[i].busy = true;
 				}
 			}
-			if(m_statusReg[i].time_until_complete > 0) {
-				m_statusReg[i].time_until_complete--;
-				if(m_statusReg[i].time_until_complete == 0)
-					timing_table->m_result[m_statusReg[i].cur_instr] = sig_clock_cycles;
+			else {		
+					m_statusReg[i].busy = false;
 			}
-			if(m_statusReg[i].time_until_complete != 0) {
-				simulation_complete = false; //There might be a case (like after a branch) where this returns true, but there are still more instructions
+			for(int j=0; j<stages; j++) {
+				if(m_statusReg[i].time_until_complete[j] > 0) {
+					m_statusReg[i].time_until_complete[j]--;
+					if(m_statusReg[i].time_until_complete[j] == 0) {
+						timing_table->m_result[m_statusReg[i].cur_instr[j]] = sig_clock_cycles;
+						m_statusReg[i].instr_in_stage[j] = false;
+					}
+				}
 			}
-			else
-				m_statusReg[i].dest_reg = k;
+			for(int j=0; j<stages; j++) {
+				if(m_statusReg[i].instr_in_stage[j]) {
+					simulation_complete = false;
+				}
+			}
+					
 
 		}
 
-		//if(simulation_complete and )
-		//	count++;
+
 		if(simulation_complete and instructions_done) {
 			cout<<"SHUTTING DOWN THE SIMULATOR"<<endl;
 			cout<<"SHUTTING DOWN THE SIMULATOR"<<endl;

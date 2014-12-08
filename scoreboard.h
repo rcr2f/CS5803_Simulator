@@ -113,7 +113,7 @@ SC_MODULE (SCOREBOARD){
 		unit_stat_reg->clock(clock);
 		unit_stat_reg->end(end);
 		unit_stat_reg->sig_clock_cycles(sig_clock_cycles);
-		
+		unit_stat_reg->is_CDC6600(is_CDC6600);
 
 		count = 0;
 	}//end SC_CTOR

@@ -43,7 +43,7 @@ int sc_main (int argc, char* argv[])
 	
 	//output the timing table
 	ofstream * outFile = new std::ofstream("CDC_Sim_Results.csv");
-	Timing_Table timing_table(outFile, size[program_selection]);
+	Timing_Table timing_table(outFile, size[program_selection], is_CDC6600);
 	int clock_cycles = 0;
 	sc_signal< int > sig_clock_cycles;
 
