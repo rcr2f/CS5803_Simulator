@@ -17,6 +17,7 @@
 #include <systemc.h>
 #include "functional_unit_lib.h"
 #include "enums.h"
+#include "timing_table.h"
 
 /************************************************
  *
@@ -222,6 +223,7 @@ struct STATUS_REG {
 	int time_until_free;
 	_register dest_reg;
 	int time_until_complete;
+	int cur_instr;
 };
 
 
@@ -237,6 +239,7 @@ SC_MODULE (FUNC_UNIT_STATUS){
 	Unit func_unit;
 	int time_until_free;
 	int time_until_complete;
+	int cur_instr;
 	_register dest_reg;
 
 	//Process prototypes/declarations
@@ -244,6 +247,10 @@ SC_MODULE (FUNC_UNIT_STATUS){
 	void add_request(void);
 	void output_status(void);
 	void update_status_table(void);
+	
+	//output for timing table
+	Timing_Table * timing_table;
+	sc_in< int > sig_clock_cycles;
 
 	//Helper function prototypes/declarations
 	int count;

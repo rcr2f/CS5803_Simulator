@@ -139,6 +139,7 @@
 	}
  
 	void FUNC_UNIT_STATUS::add_request(void){
+		m_statusReg[(int)func_unit].cur_instr = cur_instr;
 		m_statusReg[(int)func_unit].time_until_free = time_until_free;
 		m_statusReg[(int)func_unit].time_until_complete = time_until_complete;
 		m_statusReg[(int)func_unit].dest_reg = dest_reg;
@@ -159,6 +160,7 @@
 				m_statusReg[i].time_until_free--;
 				if(m_statusReg[i].time_until_free == 0) {
 					m_statusReg[i].busy = false;
+					timing_table->m_unit_ready[m_statusReg[i].cur_instr] = sig_clock_cycles;
 				}
 				else {		
 					m_statusReg[i].busy = true;
@@ -166,6 +168,8 @@
 			}
 			if(m_statusReg[i].time_until_complete > 0) {
 				m_statusReg[i].time_until_complete--;
+				if(m_statusReg[i].time_until_complete == 0)
+					timing_table->m_result[m_statusReg[i].cur_instr] = sig_clock_cycles;
 			}
 			if(m_statusReg[i].time_until_complete != 0) {
 				simulation_complete = false; //There might be a case (like after a branch) where this returns true, but there are still more instructions

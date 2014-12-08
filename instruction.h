@@ -14,6 +14,7 @@
 
 #include "enums.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 
@@ -24,14 +25,17 @@ class Instruction{
 		Operation m_opcode;
 		opcode_length m_length;
 		int m_offset;
+		//output file info
+		int instr_count;
+		ostream * outFile;
 
 	public:
 		Instruction();
 		
-		Instruction(Operation opcode, opcode_length length, _register dest, _register src1,  _register src2);
+		Instruction(Operation opcode, opcode_length length, _register dest, _register src1,  _register src2, int instr_row);
 		
 		//special constructor needed for branch
-		Instruction(Operation opcode, opcode_length length, int offset);
+		Instruction(Operation opcode, opcode_length length, int offset, int instr_row);
 		
 		friend ostream& operator<<(ostream& os, const Instruction& instr);
 

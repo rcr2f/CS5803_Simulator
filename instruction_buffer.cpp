@@ -8,21 +8,28 @@
 #include <instruction.h>
 #include "programs.h"
 #include "scoreboard.cpp"
+#include "timing_table.h"
 
     
 SC_MODULE(instruction_buffer) {
 	sc_in_clk clock;
 	sc_inout< bool > end; 
 	sc_inout< bool > is_CDC6600;
+	sc_inout< int > sig_clock_cycles;
 	
 	void m_issue_instruction(void);
 	void m_instruction_source(void);
 	
+	//output for timing table
+	Timing_Table * timing_table;
 	SCOREBOARD * m_scoreboard;
 	
 	int m_program_selection;
 	int instruction_addr;
-
+	void init_timing_table() {
+		m_scoreboard->timing_table = timing_table;
+		m_scoreboard->init_timing_table();
+	}
 	//Constructor
 	SC_CTOR(instruction_buffer) {
 		
@@ -38,6 +45,9 @@ SC_MODULE(instruction_buffer) {
 		m_scoreboard->clock(clock);
 		m_scoreboard->end(end);
 		m_scoreboard->is_CDC6600(is_CDC6600);
+		m_scoreboard->sig_clock_cycles(sig_clock_cycles);
+		//m_scoreboard->timing_table = timing_table;
+
 		
 	}
 	
@@ -49,6 +59,7 @@ void instruction_buffer::m_issue_instruction(void) {
 	while(true) {
 		if( fifo_buffer.nb_read(next_instruction)) {
 			m_scoreboard->fifo_buffer.write(next_instruction);
+			//timing_table->print();
 		}
 		wait(2, SC_NS);
 	}

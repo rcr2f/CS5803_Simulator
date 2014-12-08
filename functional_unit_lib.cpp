@@ -90,7 +90,7 @@ void FLOATING_ADD::add(void){
 		cycle_delay = 4;
 		time_until_free = 4;
 	}
-	else {000
+	else {
 		cycle_delay = 4;
 		time_until_free = 1;
 	}

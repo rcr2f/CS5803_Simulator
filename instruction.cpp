@@ -16,8 +16,9 @@ Instruction::Instruction()
 {
 }
 
-Instruction::Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src2)
+Instruction::Instruction(Operation opcode, opcode_length length, _register dest,  _register src1,  _register src2, int instr_row)
 {
+	instr_count = instr_row;
 	m_destination = dest;
 	m_source1 = src1;
 	m_source2 = src2;
@@ -26,8 +27,9 @@ Instruction::Instruction(Operation opcode, opcode_length length, _register dest,
 }
 
 //special constructor needed for branch
-Instruction::Instruction(Operation opcode, opcode_length length, int offset)
+Instruction::Instruction(Operation opcode, opcode_length length, int offset, int instr_row)
 {
+	instr_count = instr_row;
 	m_opcode = opcode;
 	m_length = length;
 	m_offset = offset;

@@ -14,6 +14,7 @@
 #include "functional_unit_lib.cpp"
 #include "instruction.h"
 #include "enums.h"
+#include "timing_table.h"
 
 SC_MODULE (SCOREBOARD){
 
@@ -49,14 +50,22 @@ SC_MODULE (SCOREBOARD){
 	bool check_unit_haz(void);
 	bool check_data_haz(void);
 	
+	//output for timing table
+	Timing_Table * timing_table;
+	sc_inout< int > sig_clock_cycles;
+	void init_timing_table() {
+		unit_stat_reg->timing_table = timing_table;
+	}
+	
 	//count for empty instruction buffer	
 	int count;
+	//keep track of which line to output timing table for
+	int instr_count;
 
 	//Constructor
 	SC_CTOR(SCOREBOARD){
-		//SC_METHOD (test);
-		//sensitive << clock.pos();
-		fetch_instr = false;
+
+		fetch_instr = true;
 		//attempt to issue every clock cycle
 		SC_METHOD (issue_stage);
 		sensitive << clock.pos();
@@ -103,6 +112,8 @@ SC_MODULE (SCOREBOARD){
 		unit_stat_reg = new FUNC_UNIT_STATUS ("Func_Unit_Status_Reg0");
 		unit_stat_reg->clock(clock);
 		unit_stat_reg->end(end);
+		unit_stat_reg->sig_clock_cycles(sig_clock_cycles);
+		
 
 		count = 0;
 	}//end SC_CTOR

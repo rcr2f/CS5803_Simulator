@@ -60,6 +60,7 @@ void SCOREBOARD::issue_stage(void){
 	//Instruction current_instruct;
 	if(fetch_instr) {
 		if(fifo_buffer.nb_read(cur_instr)) {
+			timing_table->m_issue[cur_instr.instr_count] = sig_clock_cycles;
 			cout << sc_time_stamp() << endl;
 			cout << cur_instr << endl;
 			fetch_instr = false;
@@ -80,29 +81,36 @@ void SCOREBOARD::issue_stage(void){
 	//If no conflicts proceed to issue instruction
 	if (!unit_haz && !data_haz){
 		cout << sc_time_stamp() << " Issuing Instruction" << endl;
+		timing_table->m_start[cur_instr.instr_count] = sig_clock_cycles;
 		switch (cur_instr.m_opcode) {
 			case fixed_add: 
 				unit_stat_reg->time_until_complete = m_fixed_add->cycle_delay;
+				unit_stat_reg->time_until_free = m_fixed_add->time_until_free;
 				unit_stat_reg->func_unit = fixed_adder;
 				break;
 			case float_add:
 				unit_stat_reg->time_until_complete = m_floating_add->cycle_delay;
+				unit_stat_reg->time_until_free = m_floating_add->time_until_free;
 				unit_stat_reg->func_unit = float_adder;
 				break;
 			case boolean:
 				unit_stat_reg->time_until_complete = m_bool->cycle_delay;
+				unit_stat_reg->time_until_free = m_bool->time_until_free;
 				unit_stat_reg->func_unit = bool_unit;
 				break;
 			case shift:
 				unit_stat_reg->time_until_complete = m_shift->cycle_delay;
+				unit_stat_reg->time_until_free = m_shift->time_until_free;
 				unit_stat_reg->func_unit = shifter;
 				break;
 			case branch:
 				unit_stat_reg->time_until_complete = m_branch->cycle_delay + 2;
+				unit_stat_reg->time_until_free = m_branch->time_until_free;
 				unit_stat_reg->func_unit = brancher;
 				break;
 			case divide:
-					unit_stat_reg->time_until_complete = m_div->cycle_delay;
+				unit_stat_reg->time_until_complete = m_div->cycle_delay;
+				unit_stat_reg->time_until_free = m_div->time_until_free;
 				unit_stat_reg->func_unit = divider;
 				break;
 			case multiply:
@@ -111,6 +119,7 @@ void SCOREBOARD::issue_stage(void){
 				else
 					unit_stat_reg->func_unit = multiplier2;
 				unit_stat_reg->time_until_complete = m_mult->cycle_delay;
+				unit_stat_reg->time_until_free = m_mult->time_until_free;
 				break;
 			case increment:
 				if(unit_stat_reg->m_statusReg[(int)cur_instr.m_opcode+1].busy)
@@ -118,11 +127,13 @@ void SCOREBOARD::issue_stage(void){
 				else
 					unit_stat_reg->func_unit = incrementer2;
 				unit_stat_reg->time_until_complete = m_inc->cycle_delay;
+				unit_stat_reg->time_until_free = m_inc->time_until_free;
 				break;
 			default:
 				break;
 			}
 		unit_stat_reg->dest_reg = cur_instr.m_destination;
+		unit_stat_reg->cur_instr = cur_instr.instr_count;
 		unit_stat_reg->add_request();
 		
 		fetch_instr = true;
