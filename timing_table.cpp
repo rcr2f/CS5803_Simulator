@@ -39,7 +39,7 @@ void Timing_Table::print()
 				*outFile << m_result[i]+4 << ",";
 			}
 		else
-			*outFile <<" ;";
+			*outFile <<" ,";
 		if(i==m_num_instr-1){
 			if(m_is6600)
 				*outFile << m_result[i]+5 << ",";
